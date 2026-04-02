@@ -1,0 +1,45 @@
+﻿
+@using RoomsReservation.Data;
+@using RoomsReservation.Data.Tables;
+
+@page "/Rooms"
+@rendermode InteractiveServer
+@inject AppDbContext Db
+
+
+<h3>Lista Studentów</h3>
+
+<ul>
+    @foreach (var s in students)
+    {
+        <li>@s.FirstName</li>
+    }
+</ul>
+
+<h3>Dodaj ucznia</h3>
+
+<input @bind="newName" placeholder="Imię" />
+<button @onclick="AddStudent">Dodaj</button>
+
+@code {
+    private List<Student> students = new();
+    private string newName = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        students = Db.Students.ToList();
+    }
+
+    private void AddStudent()
+    {
+        if (string.IsNullOrWhiteSpace(newName))
+            return;
+
+        var student = new Student { FirstName = newName };
+        Db.Students.Add(student);
+        Db.SaveChanges();
+
+        students.Add(student);
+        newName = string.Empty;
+    }
+}
