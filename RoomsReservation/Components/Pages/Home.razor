@@ -1,7 +1,32 @@
-﻿@page "/"
+﻿@using RoomsReservation.Data;
+@using RoomsReservation.Data.Tables;
+
+@page "/"
+@rendermode InteractiveServer
+@inject AppDbContext Db
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1>Login or register as a Studnent or Teacher</h1>
 
-Welcome to your new app.
+Lista użytkowników:
+
+<ul>
+    @foreach (var s in Users)
+    {
+        <li>
+            @s.FirstName @s.LastName 
+            @if (s.IsProfessor) {<text> Professor </text>} else{<text> Student </text>}
+            @s.Email
+    </li>
+    }
+</ul>
+
+@code
+{
+    private List<User> Users = new();
+    protected override void OnInitialized()
+    {
+        Users = Db.Users.ToList();
+    }
+}
