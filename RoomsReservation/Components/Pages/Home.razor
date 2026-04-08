@@ -7,26 +7,179 @@
 
 <PageTitle>Home</PageTitle>
 
-<h1>Login or register as a Studnent or Teacher</h1>
-
-Lista użytkowników:
+<h1>Login or register</h1>
 
 <ul>
     @foreach (var s in Users)
     {
         <li>
-            @s.FirstName @s.LastName 
-            @if (s.IsProfessor) {<text> Professor </text>} else{<text> Student </text>}
+            @s.FirstName @s.LastName
+            @(s.IsProfessor ? "Professor" : "Student")
             @s.Email
-    </li>
+        </li>
     }
 </ul>
 
-@code
-{
+<!-- Otwieranie okna z logowaniem -->
+<button class="login-btn" @onclick="ShowLogin">Login</button>
+
+<div class="auth-modal @(ActiveForm == "register" ? "show slide" : (ActiveForm == "login" ? "show" : ""))">
+    <button class="close-btn-modal" @onclick="CloseModal">
+        <i class='bx bxs-x'></i>
+    </button>
+
+    <!-- LOGIN -->
+    <div class="form-box login">
+        <h2>Login</h2>
+
+        <div class="input-box">
+            <input @bind="LoginEmail" placeholder="Email">
+                <i class='bx bxs-envelope'></i>
+        </div>
+
+        <div class="input-box">
+            <input @bind="LoginPassword" placeholder="Password">
+                <i class='bx bxs-lock'></i>
+        </div>
+
+        <button class="btn" @onclick="Login">Login</button>
+
+        <p>
+            Don't have an account?
+            <a href="#" @onclick="ShowRegister">Register</a>
+        </p>
+
+        @if (!string.IsNullOrEmpty(LoginMessage))
+        {
+            <p class="error">@LoginMessage</p>
+        }
+    </div>
+
+    <!-- REGISTER -->
+    <div class="form-box register">
+        <h2>Register</h2>
+
+        <div class="input-box">
+            <input @bind="RegisterFirstName" placeholder="First name">
+                <i class='bx bxs-user'></i>
+        </div>
+
+        <div class="input-box">
+            <input @bind="RegisterLastName" placeholder="Last name">
+                <i class='bx bxs-user'></i>
+        </div>
+
+        <div class="input-box">
+            <input @bind="RegisterEmail" placeholder="Email">
+                <i class='bx bxs-envelope'></i>
+        </div>
+
+        <div class="input-box">
+            <input @bind="RegisterPassword" placeholder="Password">
+                <i class='bx bxs-lock'></i>
+        </div>
+
+        <div class="input-box">
+            <select @bind="RegisterRole">
+                <option value="">Select role</option>
+                <option value="student">Student</option>
+                <option value="professor">Professor</option>
+            </select>
+        </div>
+
+        <button class="btn" @onclick="Register">Register</button>
+
+        <p>
+            Already have an account?
+            <a href="#" @onclick="ShowLogin">Login</a>
+        </p>
+    </div>
+</div>
+
+@code {
     private List<User> Users = new();
+
+    // Modal state
+    private string ActiveForm = "";
+
+    // Login model
+    private string LoginEmail = "";
+    private string LoginPassword = "";
+    private string LoginMessage = "";
+
+    // Register model
+    private string RegisterFirstName = "";
+    private string RegisterLastName = "";
+    private string RegisterEmail = "";
+    private string RegisterPassword = "";
+    private string RegisterRole = "";
+    private string RegisterMessage = "";
+
     protected override void OnInitialized()
     {
         Users = Db.Users.ToList();
+    }
+
+    private void ShowLogin() => ActiveForm = "login";
+    private void ShowRegister() => ActiveForm = "register";
+    private void CloseModal() => ActiveForm = "";
+
+    private void Login()
+    {
+        var user = Db.Users.FirstOrDefault(u => u.Email == LoginEmail);
+
+        if (user == null)
+        {
+            LoginMessage = "User not found.";
+            return;
+        }
+
+        if (user.Password != LoginPassword)
+        {
+            LoginMessage = "Incorrect password.";
+            return;
+        }
+
+        LoginMessage = $"Welcome {user.FirstName}!";
+        CloseModal();
+    }
+
+    private void Register()
+    {
+        RegisterMessage = "";
+
+        if (string.IsNullOrWhiteSpace(RegisterFirstName) ||
+            string.IsNullOrWhiteSpace(RegisterLastName) ||
+            string.IsNullOrWhiteSpace(RegisterEmail) ||
+            string.IsNullOrWhiteSpace(RegisterPassword) ||
+            string.IsNullOrWhiteSpace(RegisterRole))
+        {
+            RegisterMessage = "All fields are required.";
+            return;
+        }
+
+        if (Db.Users.Any(u => u.Email == RegisterEmail))
+        {
+            RegisterMessage = "Email already exists.";
+            return;
+        }
+
+        var newUser = new User
+        {
+            FirstName = RegisterFirstName,
+            LastName = RegisterLastName,
+            Email = RegisterEmail,
+            Password = RegisterPassword,
+            IsStudent = RegisterRole == "student",
+            IsProfessor = RegisterRole == "professor"
+        };
+
+        Db.Users.Add(newUser);
+        Db.SaveChanges();
+
+        Users = Db.Users.ToList();
+
+        RegisterMessage = "Account created successfully!";
+        ShowLogin();
     }
 }

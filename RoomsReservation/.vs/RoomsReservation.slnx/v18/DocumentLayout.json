@@ -7,12 +7,8 @@
       "RelativeMoniker": "D:0:0:{AD06B0D1-B20D-258C-2CD9-4E50B89F8AD1}|RoomsReservation.csproj|solutionrelative:components\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{AD06B0D1-B20D-258C-2CD9-4E50B89F8AD1}|RoomsReservation.csproj|c:\\users\\surwi\\desktop\\studia\\semestr lv\\programowanie funkcyjne\\rooms-reservation\\roomsreservation\\components\\pages\\students.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{AD06B0D1-B20D-258C-2CD9-4E50B89F8AD1}|RoomsReservation.csproj|solutionrelative:components\\pages\\students.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{AD06B0D1-B20D-258C-2CD9-4E50B89F8AD1}|RoomsReservation.csproj|c:\\users\\surwi\\desktop\\studia\\semestr lv\\programowanie funkcyjne\\rooms-reservation\\roomsreservation\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{AD06B0D1-B20D-258C-2CD9-4E50B89F8AD1}|RoomsReservation.csproj|solutionrelative:data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{AD06B0D1-B20D-258C-2CD9-4E50B89F8AD1}|RoomsReservation.csproj|c:\\users\\surwi\\desktop\\studia\\semestr lv\\programowanie funkcyjne\\rooms-reservation\\roomsreservation\\wwwroot\\app.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{AD06B0D1-B20D-258C-2CD9-4E50B89F8AD1}|RoomsReservation.csproj|solutionrelative:wwwroot\\app.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,32 +18,19 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "AppDbContext.cs",
-              "DocumentMoniker": "C:\\Users\\surwi\\Desktop\\Studia\\Semestr lV\\Programowanie funkcyjne\\Rooms-reservation\\RoomsReservation\\Data\\AppDbContext.cs",
-              "RelativeDocumentMoniker": "Data\\AppDbContext.cs",
-              "ToolTip": "C:\\Users\\surwi\\Desktop\\Studia\\Semestr lV\\Programowanie funkcyjne\\Rooms-reservation\\RoomsReservation\\Data\\AppDbContext.cs",
-              "RelativeToolTip": "Data\\AppDbContext.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAsAAAAgAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-07T14:36:22.382Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "Students.razor",
-              "DocumentMoniker": "C:\\Users\\surwi\\Desktop\\Studia\\Semestr lV\\Programowanie funkcyjne\\Rooms-reservation\\RoomsReservation\\Components\\Pages\\Students.razor",
-              "RelativeDocumentMoniker": "Components\\Pages\\Students.razor",
-              "ToolTip": "C:\\Users\\surwi\\Desktop\\Studia\\Semestr lV\\Programowanie funkcyjne\\Rooms-reservation\\RoomsReservation\\Components\\Pages\\Students.razor",
-              "RelativeToolTip": "Components\\Pages\\Students.razor",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAABwAAAAYAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-04-02T14:19:04.061Z",
+              "Title": "app.css",
+              "DocumentMoniker": "C:\\Users\\surwi\\Desktop\\Studia\\Semestr lV\\Programowanie funkcyjne\\Rooms-reservation\\RoomsReservation\\wwwroot\\app.css",
+              "RelativeDocumentMoniker": "wwwroot\\app.css",
+              "ToolTip": "C:\\Users\\surwi\\Desktop\\Studia\\Semestr lV\\Programowanie funkcyjne\\Rooms-reservation\\RoomsReservation\\wwwroot\\app.css",
+              "RelativeToolTip": "wwwroot\\app.css",
+              "ViewState": "AgIAAMUAAAAAAAAAAAAYwMkAAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2026-04-08T14:45:11.012Z",
               "EditorCaption": ""
             },
             {
@@ -58,7 +41,7 @@
               "RelativeDocumentMoniker": "Components\\Pages\\Home.razor",
               "ToolTip": "C:\\Users\\surwi\\Desktop\\Studia\\Semestr lV\\Programowanie funkcyjne\\Rooms-reservation\\RoomsReservation\\Components\\Pages\\Home.razor",
               "RelativeToolTip": "Components\\Pages\\Home.razor",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAABkAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAJQAAAAAAAAAAAAswKEAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2026-04-07T14:25:01.863Z",
               "EditorCaption": ""
