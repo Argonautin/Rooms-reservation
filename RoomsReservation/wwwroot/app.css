@@ -223,3 +223,35 @@ h1:focus {
     font-weight: 600;
     text-align: center;
 }
+
+/* Plan budynku */
+.plan-container {
+    display: flex;
+    gap: 20px;
+}
+
+.plan-left {
+    flex: 1;
+}
+
+.plan-right {
+    width: 250px;
+    padding: 15px;
+    border-left: 2px solid #ddd;
+}
+
+svg {
+    border: 1px solid #ccc;
+}
+
+.room {
+    fill: #e0e0e0;
+    stroke: #333;
+    stroke-width: 2;
+    cursor: pointer;
+    transition: fill 0.2s;
+}
+
+    .room:hover {
+        fill: #bcd4ff;
+    }

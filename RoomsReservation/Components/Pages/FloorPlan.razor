@@ -1,0 +1,67 @@
+﻿@using RoomsReservation.Data.Tables
+
+<div class="floor-wrapper">
+
+    <div class="floor-header">
+        @FloorName
+    </div>
+
+    <svg class="floor-svg" viewBox="0 0 650 260">
+
+        @foreach (var room in Rooms)
+        {
+            <g @onclick="() => OnRoomSelected.InvokeAsync(room)" class="room-group">
+                <polygon points="@GetPolygon(room.RoomName)" class="room" />
+
+                <text x="@GetLabelX(room.RoomName)"
+                      y="@GetLabelY(room.RoomName)"
+                      class="room-label">
+                    @if (room.RoomName == "Schody" || room.RoomName == "Winda" || room.RoomName == "WC1" || room.RoomName == "WC2" || room.RoomName == "Korytarz")
+                    {
+                          
+                    }
+                    else
+                    {
+                        @room.RoomName
+                    }
+                </text>
+            </g>
+        }
+
+    </svg>
+</div>
+
+@code {
+    [Parameter] public string FloorName { get; set; } = "";
+    [Parameter] public List<Room> Rooms { get; set; } = new();
+    [Parameter] public EventCallback<Room> OnRoomSelected { get; set; }
+
+    string GetPolygon(string name) => name switch
+    {
+        "Pokój 1" => "20,20 190,20 190,140 40,140 20,120",
+        "Pokój 2" => "240,70 460,70 460,175 250,175 240,165 240,160",
+        "Pokój 3" => "460,100 560,100 560,130 590,130 590,175 460,175",
+        "WC1" => "460,70 510,70 510,100 460,100",
+        "WC2" => "510,70 560,70 560,100 510,100",
+        "Winda" => "590,100 630,100 630,130 590,130",
+        "Schody" => "190,20 240,20 240,160 195,160 190,155",
+        "Korytarz" => "240,20 590,20 590,130 560,130 560,70 240,70",
+        _ => ""
+    };
+
+    int GetLabelX(string name) => name switch
+    {
+        "Pokój 1" => 85,
+        "Pokój 2" => 325,
+        "Pokój 3" => 500,
+        _ => 0
+    };
+
+    int GetLabelY(string name) => name switch
+    {
+        "Pokój 1" => 80,
+        "Pokój 2" => 122,
+        "Pokój 3" => 137,
+        _ => 0
+    };
+}

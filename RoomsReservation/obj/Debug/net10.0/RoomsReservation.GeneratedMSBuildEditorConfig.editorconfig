@@ -73,3 +73,11 @@ build_metadata.AdditionalFiles.CssScope = b-vlcjb2bajb
 [C:/Users/surwi/Desktop/Studia/Semestr lV/Programowanie funkcyjne/Rooms-reservation/RoomsReservation/Components/Layout/ReconnectModal.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcUmVjb25uZWN0TW9kYWwucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-sfvom2rsyh
+
+[C:/Users/surwi/Desktop/Studia/Semestr lV/Programowanie funkcyjne/Rooms-reservation/RoomsReservation/Components/Pages/BuildingView.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xCdWlsZGluZ1ZpZXcucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-0eib2cjuxl
+
+[C:/Users/surwi/Desktop/Studia/Semestr lV/Programowanie funkcyjne/Rooms-reservation/RoomsReservation/Components/Pages/FloorPlan.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGbG9vclBsYW4ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-cgfrkif69r

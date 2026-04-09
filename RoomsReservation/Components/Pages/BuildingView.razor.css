@@ -1,0 +1,49 @@
+﻿.layout {
+    display: flex;
+    width: 100%;
+    height: calc(100vh - 20px);
+    gap: 20px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.left-panel {
+    flex: 1;
+    max-width: 1000px; 
+}
+
+.right-panel {
+    width: 250px;
+    border-left: 2px solid #ddd;
+    padding-left: 20px;
+    overflow-y: auto;
+}
+
+.floor-selector {
+    margin-bottom: 10px;
+}
+
+.floor-btn {
+    margin-right: 10px;
+    padding: 8px 14px;
+    border: none;
+    background: #eee;
+    cursor: pointer;
+}
+
+    .floor-btn:hover {
+        background: #d0e2ff;
+    }
+
+textarea, input {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.save-btn {
+    padding: 8px 14px;
+    background: #4caf50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}

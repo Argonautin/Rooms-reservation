@@ -361,3 +361,78 @@ main[b-ze10e6pfi0] {
         opacity: 0;
     }
 }
+/* /Components/Pages/BuildingView.razor.rz.scp.css */
+.layout[b-0eib2cjuxl] {
+    display: flex;
+    width: 100%;
+    height: calc(100vh - 20px);
+    gap: 20px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.left-panel[b-0eib2cjuxl] {
+    flex: 1;
+    max-width: 1000px; 
+}
+
+.right-panel[b-0eib2cjuxl] {
+    width: 250px;
+    border-left: 2px solid #ddd;
+    padding-left: 20px;
+    overflow-y: auto;
+}
+
+.floor-selector[b-0eib2cjuxl] {
+    margin-bottom: 10px;
+}
+
+.floor-btn[b-0eib2cjuxl] {
+    margin-right: 10px;
+    padding: 8px 14px;
+    border: none;
+    background: #eee;
+    cursor: pointer;
+}
+
+    .floor-btn:hover[b-0eib2cjuxl] {
+        background: #d0e2ff;
+    }
+
+textarea[b-0eib2cjuxl], input[b-0eib2cjuxl] {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.save-btn[b-0eib2cjuxl] {
+    padding: 8px 14px;
+    background: #4caf50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+/* /Components/Pages/FloorPlan.razor.rz.scp.css */
+.floor-wrapper[b-cgfrkif69r] {
+    position: relative;
+    width: 100%;
+    height: auto;
+}
+
+.floor-header[b-cgfrkif69r] {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(255,255,255,0.85);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    z-index: 10;
+}
+
+.floor-svg[b-cgfrkif69r] {
+    width: 100%;
+    height: auto;
+    border: 1px solid #ccc;
+}

@@ -1,0 +1,89 @@
+﻿@page "/building"
+@using RoomsReservation.Data.Tables
+
+<div class="layout">
+
+    <!-- LEWA KOLUMNA – PLAN PIĘTRA -->
+    <div class="left-panel">
+        <div class="floor-selector">
+            @foreach (var floor in Floors)
+            {
+                <button class="floor-btn"
+                        @onclick="() => SelectedFloor = floor">
+                    @floor
+                </button>
+            }
+        </div>
+
+        <FloorPlan FloorName="@SelectedFloor"
+                    Rooms="@FloorsData[SelectedFloor]"
+                    OnRoomSelected="RoomClicked" />
+    </div>
+
+    <!-- PRAWA KOLUMNA – OPIS POKOJU -->
+    <div class="right-panel">
+        @if (SelectedRoom is not null)
+        {
+            <h3>@SelectedRoom.RoomName</h3>
+
+            <label>Opis:</label>
+            <textarea @bind="SelectedRoom.Description"></textarea>
+
+            <label>Pojemność:</label>
+            <input type="number" @bind="SelectedRoom.Capacity" />
+
+            <label>Profesor:</label>
+            <input @bind="SelectedRoom.Professor" />
+
+            <label>Elementy Wyposarzenia:</label>
+            <ul>
+                <input type="checkbox" @bind="SelectedRoom.Status" />
+            </ul>
+
+
+            <button class="save-btn" @onclick="SaveRoom">Zapisz</button>
+        }
+        else
+        {
+            <p>Kliknij pokój, aby zobaczyć szczegóły.</p>
+        }
+    </div>
+
+</div>
+
+@code {
+    List<string> Floors = new()
+    {
+        "Parter", "Piętro 1", "Piętro 2", "Piętro 3", "Piętro 4"
+    };
+
+    string SelectedFloor = "Parter";
+
+    Room? SelectedRoom;
+
+    Dictionary<string, List<Room>> FloorsData = new();
+
+    protected override void OnInitialized()
+    {
+        int id = 1;
+
+        foreach (var floor in Floors.Select((name, index) => new { name, index }))
+        {
+            FloorsData[floor.name] = new()
+            {
+                new Room { Id = id++, RoomName = "Pokój 1", Floor = floor.index },
+                new Room { Id = id++, RoomName = "Pokój 2", Floor = floor.index },
+                new Room { Id = id++, RoomName = "Pokój 3", Floor = floor.index },
+                new Room { Id = id++, RoomName = "WC1",     Floor = floor.index },
+                new Room { Id = id++, RoomName = "WC2",     Floor = floor.index },
+                new Room { Id = id++, RoomName = "Winda",   Floor = floor.index },
+                new Room { Id = id++, RoomName = "Schody",  Floor = floor.index },
+                new Room { Id = id++, RoomName = "Korytarz",Floor = floor.index }
+            };
+        }
+    }
+
+    void RoomClicked(Room room) => SelectedRoom = room;
+
+    void SaveRoom() => StateHasChanged();
+}
