@@ -1,0 +1,94 @@
+﻿@using RoomsReservation.Data;
+@using RoomsReservation.Data.Tables;
+
+@page "/dodaj_sale"
+@rendermode InteractiveServer
+@inject AppDbContext Db
+@inject AppState AppState
+
+<h3>Admin</h3>
+
+<h2>Dodaj Sale</h2>
+
+<h5>Numer sali</h5>
+<input @bind="roomName" placeholder="numer sali" />
+<h5>Piętro</h5>
+<input @bind="floor" placeholder="piętro" />
+<h5>Ilość miejsc</h5>
+<input @bind="capacity" placeholder="Ilość miejsc" />
+<h5>Opis</h5>
+<input @bind="Description" placeholder="Opis" />
+
+<button @onclick="AddRoom">Dodaj sale</button>
+
+
+<p>Sale</p>
+<ul>
+    @foreach (var s in Rooms)
+    {
+        <li>
+            <h2>Sala @s.RoomName</h2>
+            Piętro : <p>@s.Floor</p>
+            Ilość miejsc : <p>@s.Capacity</p>
+            Opis : <p>@s.Description</p>
+
+            <button @onclick="() => DeleteRoom(s.Id)">Usuń</button>
+        </li>
+    }
+</ul>
+
+@code {
+    private List<Room> Rooms = new List<Room>();
+
+    // Sale - zmienne
+    private string roomName = "";
+    private int floor;
+    private int capacity;
+    private bool Status;
+    private string Professor = "";
+    private string Description = "";
+
+    protected override void OnInitialized()
+    {
+        Rooms = Db.Rooms.ToList();
+    }
+
+    private void AddRoom()
+    {
+        if (string.IsNullOrWhiteSpace(roomName) ||
+            floor <= 0||
+            capacity <= 0||
+            string.IsNullOrWhiteSpace(Description))
+        {
+            return;
+        }
+
+        var newRoom = new Room
+        {
+            RoomName = roomName,
+            Floor = floor,
+            Capacity = capacity,
+            Status = false,
+            Professor = "",
+            Description = Description
+        };
+
+        Db.Rooms.Add(newRoom);
+		Db.SaveChanges();
+
+        Rooms = Db.Rooms.ToList();
+    }
+
+    private void DeleteRoom(int id)
+    {
+        var room = Db.Rooms.FirstOrDefault(r => r.Id == id);
+
+        if (room is null)
+            return;
+
+        Db.Rooms.Remove(room);
+        Db.SaveChanges();
+
+        Rooms = Db.Rooms.ToList();
+    }
+}

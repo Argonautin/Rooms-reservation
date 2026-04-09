@@ -1,0 +1,32 @@
+﻿@using RoomsReservation.Data;
+@using RoomsReservation.Data.Tables;
+
+@rendermode InteractiveServer
+@inject AppDbContext Db
+@inject AppState AppState
+@page "/reservation"
+
+<h3>Wybierz termin rezerwacji</h3>
+
+
+<h3>Wybierz salę</h3>
+
+<ul>
+    @foreach (var r in Rooms)
+    {
+        <li>@r.RoomName</li>
+    }
+</ul>
+
+@if (Rooms == null)
+{
+    <p>Ładowanie sal...</p>
+}else
+{
+    
+}
+
+@code {
+
+    private List<Room> Rooms = new();
+}
