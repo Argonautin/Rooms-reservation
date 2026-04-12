@@ -1,6 +1,174 @@
 ﻿@page "/Calendar"
-<h3>Calendar</h3>
+@using Microsoft.EntityFrameworkCore
+@using RoomsReservation.Data
+@using RoomsReservation.Data.Tables
+@inject AppDbContext Db
+
+<PageTitle>Kalendarz sal</PageTitle>
+
+<div class="calendar-page">
+    <section class="calendar-header-card">
+        <div>
+            <p class="eyebrow"></p>
+            <h1>Kalendarz sal</h1>
+        </div>
+
+        
+    </section>
+
+    <section class="calendar-layout">
+
+        <article class="calendar-card">
+            <div class="calendar-toolbar">
+                <button type="button" class="nav-btn" aria-label="Poprzedni miesiąc" @onclick="PreviousMonth">←</button>
+                <div class="month-label">@MonthTitle</div>
+                <button type="button" class="nav-btn" aria-label="Następny miesiąc" @onclick="NextMonth">→</button>
+            </div>
+            <div class="weekdays">
+                @foreach (var dayName in DayNames)
+                {
+                    <div class="weekday">@dayName</div>
+                }
+            </div>
+
+            <div class="month-grid">
+                @foreach (var cell in CalendarDays)
+                {
+                    <button type="button"
+                            class="day-cell @(cell.IsCurrentMonth ? string.Empty : "muted") @(cell.Date.Date == selectedDate.Date ? "active" : string.Empty)"
+                            @onclick="() => SelectDate(cell.Date)">
+                        <div class="day-top">
+                            <span class="day-number">@cell.Date.Day</span>
+                            <span class="badge">@rooms.Count</span>
+                        </div>
+
+                        <div class="day-body">
+                            @if (rooms.Any())
+                            {
+                                @foreach (var room in rooms)
+                                {
+                                    @if (room.Status == true)
+                                    {
+                                        
+                                    }else
+                                    {
+                                    <div class="mini-event">
+                                        <strong>@room.RoomName</strong>
+                                        <span>Piętro @room.Floor · @room.Capacity miejsc</span>
+                                    </div>
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                <span class="empty-day">Brak sal</span>
+                            }
+                        </div>
+                    </button>
+                }
+            </div>
+        </article>
+
+        <aside class="details-card">
+            <div class="details-header">
+                <h2>@selectedDate.ToString("dd.MM.yyyy")</h2>
+                <p>@rooms.Count sal w bazie</p>
+            </div>
+
+            @if (rooms.Count == 0)
+            {
+                <div class="empty-state">
+                    <p>Brak sal w bazie danych.</p>
+                </div>
+            }
+            else
+            {
+                <div class="event-list">
+                    @foreach (var room in rooms.OrderBy(r => r.RoomName))
+                    {
+                        <div class="event-card">
+                            <div class="event-time">
+                                <strong>@room.RoomName</strong>
+                                <span>Piętro @room.Floor</span>
+                            </div>
+                            <div class="event-content">
+                                <h3>@(room.Status ? "Sala dostępna" : "Sala niedostępna")</h3>
+                                <p>Pojemność: @room.Capacity</p>
+                                <small>@(string.IsNullOrWhiteSpace(room.Professor) ? "Brak przypisanego prowadzącego" : room.Professor)</small>
+                                @if (!string.IsNullOrWhiteSpace(room.Description))
+                                {
+                                    <div class="room-description">@room.Description</div>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </aside>
+    </section>
+</div>
 
 @code {
+    private DateTime currentMonth = new(DateTime.Today.Year, DateTime.Today.Month, 1);
+    private DateTime selectedDate = DateTime.Today;
+    private List<Room> rooms = new();
+    private List<CalendarDayCell> CalendarDays = new();
 
+    private static readonly string[] DayNames = ["Pon", "Wt", "Śr", "Czw", "Pt", "Sob", "Nd"];
+
+    private string MonthTitle => currentMonth.ToString("MMMM yyyy", new System.Globalization.CultureInfo("pl-PL"));
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadDataAsync();
+    }
+
+    private async Task LoadDataAsync()
+    {
+        rooms = await Db.Rooms
+            .AsNoTracking()
+            .OrderBy(r => r.RoomName)
+            .ToListAsync();
+
+        BuildCalendar();
+
+        if (selectedDate.Month != currentMonth.Month || selectedDate.Year != currentMonth.Year)
+            selectedDate = currentMonth;
+    }
+
+    private void BuildCalendar()
+    {
+        CalendarDays.Clear();
+
+        var firstDay = new DateTime(currentMonth.Year, currentMonth.Month, 1);
+        var offset = ((int)firstDay.DayOfWeek + 6) % 7;
+        var startDate = firstDay.AddDays(-offset);
+
+        for (int i = 0; i < 42; i++)
+        {
+            var date = startDate.AddDays(i);
+            CalendarDays.Add(new CalendarDayCell
+            {
+                Date = date,
+                IsCurrentMonth = date.Month == currentMonth.Month
+            });
+        }
+    }
+
+    private async Task PreviousMonth()
+    {
+        currentMonth = currentMonth.AddMonths(-1);
+        await LoadDataAsync();
+    }
+
+    private async Task NextMonth()
+    {
+        currentMonth = currentMonth.AddMonths(1);
+        await LoadDataAsync();
+    }
+
+    private void SelectDate(DateTime date)
+    {
+        selectedDate = date;
+    }
 }
