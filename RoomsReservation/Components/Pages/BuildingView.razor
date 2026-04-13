@@ -7,105 +7,177 @@
 
 <div class="layout">
 
-    <div class="left-panel">
-        <div class="floor-selector">
-            @foreach (var floor in Floors)
-            {
-                <button class="floor-btn"
-                        @onclick="() => SelectedFloor = floor">
-                    @floor
-                </button>
-            }
-        </div>
+	<div class="left-panel">
+		<div class="floor-selector">
+			@foreach (var floor in Floors)
+			{
+				<button class="floor-btn"
+						@onclick="() => SelectedFloor = floor">
+					@floor
+				</button>
+			}
+		</div>
 
-        @if (SelectedFloor != null)
-        {
-            <FloorPlan FloorName="@SelectedFloor"
-                       Rooms="@FloorsData[SelectedFloor]"
-                       OnRoomSelected="RoomClicked" />
-        }
+		@if (SelectedFloor != null)
+		{
+			<FloorPlan FloorName="@SelectedFloor"
+					   Rooms="@FloorsData[SelectedFloor]"
+					   OnRoomSelected="RoomClicked" />
+		}
 
-    </div>
+	</div>
 
-    <div class="right-panel">
-        @if (SelectedRoom != null)
-        {
-            <h3>@SelectedRoom.RoomName</h3>
+	<div class="right-panel">
+		@if (SelectedRoom != null)
+		{
+			<h3>@SelectedRoom.RoomName</h3>
 
-            <label>Opis:</label>
-            <textarea @bind="SelectedRoom.Description"></textarea>
+			<label>Opis:</label>
+			<textarea @bind="SelectedRoom.Description"></textarea>
 
-            <label>Pojemność:</label>
-            <input type="number" @bind="SelectedRoom.Capacity" />
+			<label>Pojemność:</label>
+			<input type="number" @bind="SelectedRoom.Capacity" />
 
-            <label>Profesor:</label>
-            <input @bind="SelectedRoom.Professor" />
+			<label>Profesor:</label>
+			<input @bind="SelectedRoom.Professor" />
 
-            <label>Elementy Wyposarzenia:</label>
-            <ul>
-                <input type="checkbox" @bind="SelectedRoom.Status" />
-            </ul>
+			// to jest status czy jest zajęta czy nie, jakby ktoś chciał jako checkbox bo w tym tego nie potrzeba
+			@* <div class="inline-row">
+				<span>Status</span>
+				<input type="checkbox" class="lower-checkbox" @bind="SelectedRoom.Status" />
+			</div> *@
+            
+			<p>
+				Dodaj wyposażenie:
+				<input @bind="newEquipment" placeholder="wyposażenie" />
+				<button class="save-btn" @onclick="AddEquipment">Dodaj</button>
+			</p>
 
 
-            <button class="save-btn" @onclick="SaveRoom">Zapisz</button>
-        }
-        else
-        {
-            <p>Kliknij pokój, aby zobaczyć szczegóły.</p>
-        }
-    </div>
+			<p>Bieżące wyposażenie sali:</p>
+			<p>
+				<ul>
+					@foreach (var re in SelectedRoom.RoomEquipments)
+					{
+						<li>
+							@re.Equipment.EquipmentName
+							<button class="remove-btn" @onclick="() => RemoveEquipment(re.Id)">X</button>
+						</li>
+					}
+				</ul>
+			</p>
+            
+
+
+			<p>
+				<button class="save-btn" @onclick="SaveRoom">Zapisz</button>
+			</p>
+
+		}
+		else
+		{
+			<p>Kliknij pokój, aby zobaczyć szczegóły.</p>
+		}
+	</div>
 
 </div>
 
 @code {
-    List<string> Floors = new();
+	List<string> Floors = new();
+	private string newEquipment = string.Empty;
+	string? SelectedFloor;
 
-    string ?SelectedFloor;
+	Room? SelectedRoom;
+	Dictionary<string, List<Room>> FloorsData = new();
 
-    Room? SelectedRoom;
+	//Inicjalizacja danych o pokojach i piętrach
+	protected override async Task OnInitializedAsync()
+	{
+		var rooms = await Db.Rooms.ToListAsync();
 
-    Dictionary<string, List<Room>> FloorsData = new();
+		Floors = await Db.Rooms.Select(r => r.Floor).Distinct().OrderBy(f => f).Select(f => $"Piętro {f}").ToListAsync();
+		FloorsData = GroupRoomsByFloor(rooms);
 
-    protected override async Task OnInitializedAsync()
-    {
-        var rooms = await Db.Rooms.ToListAsync();
+		SelectedFloor = Floors.First();
+	}
 
-        Floors = await LoadFloorsAsync();
-        FloorsData = GroupRoomsByFloor(rooms);
+	//Pozyskanie danych z Bazy danych o pokoju, który został kliknięty
+	async Task RoomClicked(Room room)
+	{
+		if (room.RoomName is "WC1" or "WC2" or "Winda" or "Schody" or "Korytarz")
+			return;
 
-        SelectedFloor = Floors.First();
-    }
+		SelectedRoom = await Db.Rooms.Include(r => r.RoomEquipments).ThenInclude(re => re.Equipment).FirstAsync(r => r.Id == room.Id);
+	}
 
-    void RoomClicked(Room room)
-    {
-        if (room.RoomName is "WC1" or "WC2" or "Winda" or "Schody" or "Korytarz")
-            return;
+	//Dodawanie wyposażenia do pokoju (w pamięci, nie w bazie danych)
+	async Task AddEquipment()
+	{
+		if (string.IsNullOrWhiteSpace(newEquipment) || SelectedRoom == null)
+			return;
 
-        SelectedRoom = room;
-    }
+		var equipment = await Db.Equipments.FirstOrDefaultAsync(e => e.EquipmentName == newEquipment);
 
-    async Task SaveRoom()
-    {
-        Db.Rooms.Update(SelectedRoom!);
-        await Db.SaveChangesAsync();
-    }
+		if (equipment == null)
+		{
+			equipment = new Equipment { EquipmentName = newEquipment };
+			Db.Equipments.Add(equipment);
+		}
 
-    private async Task<List<string>> LoadFloorsAsync()
-    {
-        return await Db.Rooms
-            .Select(r => r.Floor)
-            .Distinct()
-            .OrderBy(f => f)
-            .Select(f => $"Piętro {f}")
-            .ToListAsync();
-    }
+		bool exists = SelectedRoom.RoomEquipments
+			.Any(re => re.Equipment?.EquipmentName == newEquipment);
 
-    private Dictionary<string, List<Room>> GroupRoomsByFloor(List<Room> rooms)
-    {
-        return rooms.GroupBy(r => r.Floor).ToDictionary
-        (
-            g => $"Piętro {g.Key}",
-            g => g.ToList()
-        );
-    }
+		if (!exists)
+		{
+			SelectedRoom.RoomEquipments.Add(new RoomEquipment
+			{
+				Room = SelectedRoom,
+				Equipment = equipment
+			});
+		}
+
+		newEquipment = string.Empty;
+	}
+
+	//Usuwanie wyposażenia z pokoju (w pamięci, nie w bazie danych)
+	void RemoveEquipment(int roomEquipmentId)
+	{
+		var re = SelectedRoom!.RoomEquipments
+			.FirstOrDefault(x => x.Id == roomEquipmentId || x.EquipmentId == roomEquipmentId);
+
+		if (re != null)
+			SelectedRoom.RoomEquipments.Remove(re);
+	}
+
+	//Zapisanie zmien w bazie danych
+	async Task SaveRoom()
+	{
+		Db.Rooms.Update(SelectedRoom!);
+
+		foreach (var re in SelectedRoom!.RoomEquipments)
+		{
+			if (re.Equipment != null && re.Equipment.Id == 0)
+				Db.Equipments.Add(re.Equipment);
+
+			if (re.Id == 0)
+				Db.RoomEquipments.Add(re);
+		}
+
+		await Db.SaveChangesAsync();
+
+		SelectedRoom = await Db.Rooms
+			.Include(r => r.RoomEquipments)
+				.ThenInclude(re => re.Equipment)
+			.FirstAsync(r => r.Id == SelectedRoom.Id);
+	}
+
+	//grupowanie pokoi względem pięter
+	private Dictionary<string, List<Room>> GroupRoomsByFloor(List<Room> rooms)
+	{
+		return rooms.GroupBy(r => r.Floor).ToDictionary
+		(
+			g => $"Piętro {g.Key}",
+			g => g.ToList()
+		);
+	}
 }

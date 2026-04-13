@@ -59,7 +59,17 @@ h1:focus {
     text-align: start;
 }
 
-/* Ikon */
+.inline-row {
+    display: inline-flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+.lower-checkbox{
+    margin-top:10px;
+}
+
 
 
 /* Login_Btn - przycisk logowania/rejestracji*/

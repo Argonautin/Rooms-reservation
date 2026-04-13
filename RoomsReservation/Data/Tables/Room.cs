@@ -9,5 +9,7 @@
         public bool Status { get; set; }
         public string Professor { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
+
+        public List<RoomEquipment> RoomEquipments { get; set; } = new();
     }
 }
