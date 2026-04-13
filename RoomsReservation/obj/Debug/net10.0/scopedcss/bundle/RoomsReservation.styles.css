@@ -436,3 +436,7 @@ textarea[b-0eib2cjuxl], input[b-0eib2cjuxl] {
     height: auto;
     border: 1px solid #ccc;
 }
+
+.room-group *[b-cgfrkif69r] {
+    cursor: inherit;
+}

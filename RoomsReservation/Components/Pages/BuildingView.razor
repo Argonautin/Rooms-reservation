@@ -1,9 +1,12 @@
 ﻿@page "/building"
+@using Microsoft.EntityFrameworkCore
 @using RoomsReservation.Data.Tables
+@using RoomsReservation.Data
+
+@inject AppDbContext Db
 
 <div class="layout">
 
-    <!-- LEWA KOLUMNA – PLAN PIĘTRA -->
     <div class="left-panel">
         <div class="floor-selector">
             @foreach (var floor in Floors)
@@ -15,14 +18,17 @@
             }
         </div>
 
-        <FloorPlan FloorName="@SelectedFloor"
-                    Rooms="@FloorsData[SelectedFloor]"
-                    OnRoomSelected="RoomClicked" />
+        @if (SelectedFloor != null)
+        {
+            <FloorPlan FloorName="@SelectedFloor"
+                       Rooms="@FloorsData[SelectedFloor]"
+                       OnRoomSelected="RoomClicked" />
+        }
+
     </div>
 
-    <!-- PRAWA KOLUMNA – OPIS POKOJU -->
     <div class="right-panel">
-        @if (SelectedRoom is not null)
+        @if (SelectedRoom != null)
         {
             <h3>@SelectedRoom.RoomName</h3>
 
@@ -52,38 +58,54 @@
 </div>
 
 @code {
-    List<string> Floors = new()
-    {
-        "Parter", "Piętro 1", "Piętro 2", "Piętro 3", "Piętro 4"
-    };
+    List<string> Floors = new();
 
-    string SelectedFloor = "Parter";
+    string ?SelectedFloor;
 
     Room? SelectedRoom;
 
     Dictionary<string, List<Room>> FloorsData = new();
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        int id = 1;
+        var rooms = await Db.Rooms.ToListAsync();
 
-        foreach (var floor in Floors.Select((name, index) => new { name, index }))
-        {
-            FloorsData[floor.name] = new()
-            {
-                new Room { Id = id++, RoomName = "Pokój 1", Floor = floor.index },
-                new Room { Id = id++, RoomName = "Pokój 2", Floor = floor.index },
-                new Room { Id = id++, RoomName = "Pokój 3", Floor = floor.index },
-                new Room { Id = id++, RoomName = "WC1",     Floor = floor.index },
-                new Room { Id = id++, RoomName = "WC2",     Floor = floor.index },
-                new Room { Id = id++, RoomName = "Winda",   Floor = floor.index },
-                new Room { Id = id++, RoomName = "Schody",  Floor = floor.index },
-                new Room { Id = id++, RoomName = "Korytarz",Floor = floor.index }
-            };
-        }
+        Floors = await LoadFloorsAsync();
+        FloorsData = GroupRoomsByFloor(rooms);
+
+        SelectedFloor = Floors.First();
     }
 
-    void RoomClicked(Room room) => SelectedRoom = room;
+    void RoomClicked(Room room)
+    {
+        if (room.RoomName is "WC1" or "WC2" or "Winda" or "Schody" or "Korytarz")
+            return;
 
-    void SaveRoom() => StateHasChanged();
+        SelectedRoom = room;
+    }
+
+    async Task SaveRoom()
+    {
+        Db.Rooms.Update(SelectedRoom!);
+        await Db.SaveChangesAsync();
+    }
+
+    private async Task<List<string>> LoadFloorsAsync()
+    {
+        return await Db.Rooms
+            .Select(r => r.Floor)
+            .Distinct()
+            .OrderBy(f => f)
+            .Select(f => $"Piętro {f}")
+            .ToListAsync();
+    }
+
+    private Dictionary<string, List<Room>> GroupRoomsByFloor(List<Room> rooms)
+    {
+        return rooms.GroupBy(r => r.Floor).ToDictionary
+        (
+            g => $"Piętro {g.Key}",
+            g => g.ToList()
+        );
+    }
 }

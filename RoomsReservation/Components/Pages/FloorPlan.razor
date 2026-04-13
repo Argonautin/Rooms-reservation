@@ -8,26 +8,26 @@
 
     <svg class="floor-svg" viewBox="0 0 650 260">
 
-        @foreach (var room in Rooms)
+        @foreach (var roomName in Rooms.Select(r => r.RoomName).Concat(TechnicalRooms))
         {
-            <g @onclick="() => OnRoomSelected.InvokeAsync(room)" class="room-group">
-                <polygon points="@GetPolygon(room.RoomName)" class="room" />
+            bool isNonInteractive = TechnicalRooms.Contains(roomName);
 
-                <text x="@GetLabelX(room.RoomName)"
-                      y="@GetLabelY(room.RoomName)"
+            <g class="room-group" @onclick="@(isNonInteractive ? EventCallback.Factory.Create(this, () => { })
+            : EventCallback.Factory.Create(this, () => OnRoomSelected.InvokeAsync(Rooms.First(r => r.RoomName == roomName))))"
+            style="cursor:@(isNonInteractive ? "default" : "pointer")">
+
+                <polygon points="@GetPolygon(roomName)" class="room" />
+
+                <text x="@GetLabelX(roomName)"
+                      y="@GetLabelY(roomName)"
                       class="room-label">
-                    @if (room.RoomName == "Schody" || room.RoomName == "Winda" || room.RoomName == "WC1" || room.RoomName == "WC2" || room.RoomName == "Korytarz")
+                    @if (!isNonInteractive)
                     {
-                          
-                    }
-                    else
-                    {
-                        @room.RoomName
+                        @roomName
                     }
                 </text>
             </g>
         }
-
     </svg>
 </div>
 
@@ -36,32 +36,46 @@
     [Parameter] public List<Room> Rooms { get; set; } = new();
     [Parameter] public EventCallback<Room> OnRoomSelected { get; set; }
 
-    string GetPolygon(string name) => name switch
+    readonly List<string> TechnicalRooms = new()
     {
-        "Pokój 1" => "20,20 190,20 190,140 40,140 20,120",
-        "Pokój 2" => "240,70 460,70 460,175 250,175 240,165 240,160",
-        "Pokój 3" => "460,100 560,100 560,130 590,130 590,175 460,175",
-        "WC1" => "460,70 510,70 510,100 460,100",
-        "WC2" => "510,70 560,70 560,100 510,100",
-        "Winda" => "590,100 630,100 630,130 590,130",
-        "Schody" => "190,20 240,20 240,160 195,160 190,155",
-        "Korytarz" => "240,20 590,20 590,130 560,130 560,70 240,70",
-        _ => ""
+        "WC1", "WC2", "Winda", "Schody", "Korytarz"
     };
+
+    string GetPolygon(string name)
+    {
+        if (TechnicalRooms.Contains(name))
+            return name switch
+            {
+                "WC1" => "460,70 510,70 510,100 460,100",
+                "WC2" => "510,70 560,70 560,100 510,100",
+                "Winda" => "590,100 630,100 630,130 590,130",
+                "Schody" => "190,20 240,20 240,160 195,160 190,155",
+                "Korytarz" => "240,20 590,20 590,130 560,130 560,70 240,70",
+                _ => ""
+            };
+
+        return name switch
+        {
+            "P-11" or "P-21" or "P-31" or "P-41" => "20,20 190,20 190,140 40,140 20,120",
+            "P-12" or "P-22" or "P-32" or "P-42" => "240,70 460,70 460,175 250,175 240,165 240,160",
+            "P-13" or "P-23" or "P-33" or "P-43" => "460,100 560,100 560,130 590,130 590,175 460,175",
+            _ => ""
+        };
+    }
 
     int GetLabelX(string name) => name switch
     {
-        "Pokój 1" => 85,
-        "Pokój 2" => 325,
-        "Pokój 3" => 500,
+        "P-11" or "P-21" or "P-31" or "P-41" => 85,
+        "P-12" or "P-22" or "P-32" or "P-42" => 325,
+        "P-13" or "P-23" or "P-33" or "P-43" => 500,
         _ => 0
     };
 
     int GetLabelY(string name) => name switch
     {
-        "Pokój 1" => 80,
-        "Pokój 2" => 122,
-        "Pokój 3" => 137,
+        "P-11" or "P-21" or "P-31" or "P-41" => 80,
+        "P-12" or "P-22" or "P-32" or "P-42" => 122,
+        "P-13" or "P-23" or "P-33" or "P-43" => 137,
         _ => 0
     };
 }
