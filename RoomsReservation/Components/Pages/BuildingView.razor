@@ -124,8 +124,7 @@
 			Db.Equipments.Add(equipment);
 		}
 
-		bool exists = SelectedRoom.RoomEquipments
-			.Any(re => re.Equipment?.EquipmentName == newEquipment);
+		bool exists = SelectedRoom.RoomEquipments.Any(re => re.Equipment?.EquipmentName == newEquipment);
 
 		if (!exists)
 		{
