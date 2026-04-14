@@ -3,12 +3,32 @@
   "WorkspaceRootPath": "C:\\Users\\surwi\\Desktop\\Studia\\Semestr lV\\Programowanie funkcyjne\\Rooms-reservation\\RoomsReservation\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{AD06B0D1-B20D-258C-2CD9-4E50B89F8AD1}|RoomsReservation.csproj|c:\\users\\surwi\\desktop\\studia\\semestr lv\\programowanie funkcyjne\\rooms-reservation\\roomsreservation\\components\\pages\\floorplan.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{AD06B0D1-B20D-258C-2CD9-4E50B89F8AD1}|RoomsReservation.csproj|solutionrelative:components\\pages\\floorplan.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{AD06B0D1-B20D-258C-2CD9-4E50B89F8AD1}|RoomsReservation.csproj|c:\\users\\surwi\\desktop\\studia\\semestr lv\\programowanie funkcyjne\\rooms-reservation\\roomsreservation\\components\\pages\\reports.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{AD06B0D1-B20D-258C-2CD9-4E50B89F8AD1}|RoomsReservation.csproj|solutionrelative:components\\pages\\reports.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{AD06B0D1-B20D-258C-2CD9-4E50B89F8AD1}|RoomsReservation.csproj|c:\\users\\surwi\\desktop\\studia\\semestr lv\\programowanie funkcyjne\\rooms-reservation\\roomsreservation\\components\\pages\\buildingview.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{AD06B0D1-B20D-258C-2CD9-4E50B89F8AD1}|RoomsReservation.csproj|solutionrelative:components\\pages\\buildingview.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AD06B0D1-B20D-258C-2CD9-4E50B89F8AD1}|RoomsReservation.csproj|c:\\users\\surwi\\desktop\\studia\\semestr lv\\programowanie funkcyjne\\rooms-reservation\\roomsreservation\\data\\appstate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AD06B0D1-B20D-258C-2CD9-4E50B89F8AD1}|RoomsReservation.csproj|solutionrelative:data\\appstate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AD06B0D1-B20D-258C-2CD9-4E50B89F8AD1}|RoomsReservation.csproj|c:\\users\\surwi\\desktop\\studia\\semestr lv\\programowanie funkcyjne\\rooms-reservation\\roomsreservation\\components\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{AD06B0D1-B20D-258C-2CD9-4E50B89F8AD1}|RoomsReservation.csproj|solutionrelative:components\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AD06B0D1-B20D-258C-2CD9-4E50B89F8AD1}|RoomsReservation.csproj|c:\\users\\surwi\\desktop\\studia\\semestr lv\\programowanie funkcyjne\\rooms-reservation\\roomsreservation\\components\\layout\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{AD06B0D1-B20D-258C-2CD9-4E50B89F8AD1}|RoomsReservation.csproj|solutionrelative:components\\layout\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AD06B0D1-B20D-258C-2CD9-4E50B89F8AD1}|RoomsReservation.csproj|c:\\users\\surwi\\desktop\\studia\\semestr lv\\programowanie funkcyjne\\rooms-reservation\\roomsreservation\\data\\tables\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AD06B0D1-B20D-258C-2CD9-4E50B89F8AD1}|RoomsReservation.csproj|solutionrelative:data\\tables\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AD06B0D1-B20D-258C-2CD9-4E50B89F8AD1}|RoomsReservation.csproj|c:\\users\\surwi\\desktop\\studia\\semestr lv\\programowanie funkcyjne\\rooms-reservation\\roomsreservation\\components\\pages\\floorplan.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{AD06B0D1-B20D-258C-2CD9-4E50B89F8AD1}|RoomsReservation.csproj|solutionrelative:components\\pages\\floorplan.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -20,6 +40,71 @@
           "DockedWidth": 200,
           "SelectedChildIndex": 1,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "AppState.cs",
+              "DocumentMoniker": "C:\\Users\\surwi\\Desktop\\Studia\\Semestr lV\\Programowanie funkcyjne\\Rooms-reservation\\RoomsReservation\\Data\\AppState.cs",
+              "RelativeDocumentMoniker": "Data\\AppState.cs",
+              "ToolTip": "C:\\Users\\surwi\\Desktop\\Studia\\Semestr lV\\Programowanie funkcyjne\\Rooms-reservation\\RoomsReservation\\Data\\AppState.cs",
+              "RelativeToolTip": "Data\\AppState.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAABIAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-14T07:14:42.533Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Reports.razor",
+              "DocumentMoniker": "C:\\Users\\surwi\\Desktop\\Studia\\Semestr lV\\Programowanie funkcyjne\\Rooms-reservation\\RoomsReservation\\Components\\Pages\\Reports.razor",
+              "RelativeDocumentMoniker": "Components\\Pages\\Reports.razor",
+              "ToolTip": "C:\\Users\\surwi\\Desktop\\Studia\\Semestr lV\\Programowanie funkcyjne\\Rooms-reservation\\RoomsReservation\\Components\\Pages\\Reports.razor",
+              "RelativeToolTip": "Components\\Pages\\Reports.razor",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAAAEAAAAA0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-14T07:13:27.241Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "NavMenu.razor",
+              "DocumentMoniker": "C:\\Users\\surwi\\Desktop\\Studia\\Semestr lV\\Programowanie funkcyjne\\Rooms-reservation\\RoomsReservation\\Components\\Layout\\NavMenu.razor",
+              "RelativeDocumentMoniker": "Components\\Layout\\NavMenu.razor",
+              "ToolTip": "C:\\Users\\surwi\\Desktop\\Studia\\Semestr lV\\Programowanie funkcyjne\\Rooms-reservation\\RoomsReservation\\Components\\Layout\\NavMenu.razor",
+              "RelativeToolTip": "Components\\Layout\\NavMenu.razor",
+              "ViewState": "AgIAABgAAAAAAAAAAAAAACYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-14T07:07:34.091Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "User.cs",
+              "DocumentMoniker": "C:\\Users\\surwi\\Desktop\\Studia\\Semestr lV\\Programowanie funkcyjne\\Rooms-reservation\\RoomsReservation\\Data\\Tables\\User.cs",
+              "RelativeDocumentMoniker": "Data\\Tables\\User.cs",
+              "ToolTip": "C:\\Users\\surwi\\Desktop\\Studia\\Semestr lV\\Programowanie funkcyjne\\Rooms-reservation\\RoomsReservation\\Data\\Tables\\User.cs",
+              "RelativeToolTip": "Data\\Tables\\User.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-14T06:43:53.792Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Home.razor",
+              "DocumentMoniker": "C:\\Users\\surwi\\Desktop\\Studia\\Semestr lV\\Programowanie funkcyjne\\Rooms-reservation\\RoomsReservation\\Components\\Pages\\Home.razor",
+              "RelativeDocumentMoniker": "Components\\Pages\\Home.razor",
+              "ToolTip": "C:\\Users\\surwi\\Desktop\\Studia\\Semestr lV\\Programowanie funkcyjne\\Rooms-reservation\\RoomsReservation\\Components\\Pages\\Home.razor",
+              "RelativeToolTip": "Components\\Pages\\Home.razor",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAAAcAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-14T06:39:33.604Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 1,
@@ -35,13 +120,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 6,
               "Title": "FloorPlan.razor",
               "DocumentMoniker": "C:\\Users\\surwi\\Desktop\\Studia\\Semestr lV\\Programowanie funkcyjne\\Rooms-reservation\\RoomsReservation\\Components\\Pages\\FloorPlan.razor",
               "RelativeDocumentMoniker": "Components\\Pages\\FloorPlan.razor",
               "ToolTip": "C:\\Users\\surwi\\Desktop\\Studia\\Semestr lV\\Programowanie funkcyjne\\Rooms-reservation\\RoomsReservation\\Components\\Pages\\FloorPlan.razor",
               "RelativeToolTip": "Components\\Pages\\FloorPlan.razor",
-              "ViewState": "AgIAADAAAAAAAAAAAAAAADgAAAAaAAAAAAAAAA==",
+              "ViewState": "AgIAABIAAAAAAAAAAAAAACsAAAAiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2026-04-13T16:27:53.281Z",
               "EditorCaption": ""
