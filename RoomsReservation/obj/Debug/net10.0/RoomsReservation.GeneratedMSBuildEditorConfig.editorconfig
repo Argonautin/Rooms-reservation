@@ -34,10 +34,6 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDYWxlbmRhci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/surwi/Desktop/Studia/Semestr lV/Programowanie funkcyjne/Rooms-reservation/RoomsReservation/Components/Pages/Component.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDb21wb25lbnQucmF6b3I=
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/Users/surwi/Desktop/Studia/Semestr lV/Programowanie funkcyjne/Rooms-reservation/RoomsReservation/Components/Pages/Error.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFcnJvci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
@@ -52,10 +48,6 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/surwi/Desktop/Studia/Semestr lV/Programowanie funkcyjne/Rooms-reservation/RoomsReservation/Components/Pages/Reports.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xSZXBvcnRzLnJhem9y
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/surwi/Desktop/Studia/Semestr lV/Programowanie funkcyjne/Rooms-reservation/RoomsReservation/Components/Pages/Reservation.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xSZXNlcnZhdGlvbi5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/surwi/Desktop/Studia/Semestr lV/Programowanie funkcyjne/Rooms-reservation/RoomsReservation/Components/Pages/Students.razor]
@@ -89,3 +81,7 @@ build_metadata.AdditionalFiles.CssScope = b-0eib2cjuxl
 [C:/Users/surwi/Desktop/Studia/Semestr lV/Programowanie funkcyjne/Rooms-reservation/RoomsReservation/Components/Pages/FloorPlan.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGbG9vclBsYW4ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-cgfrkif69r
+
+[C:/Users/surwi/Desktop/Studia/Semestr lV/Programowanie funkcyjne/Rooms-reservation/RoomsReservation/Components/Pages/Reservation.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xSZXNlcnZhdGlvbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-5s64i8grhl

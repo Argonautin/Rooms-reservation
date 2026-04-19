@@ -1,9 +1,75 @@
-﻿@using RoomsReservation.Data;
-@using RoomsReservation.Data.Tables;
+﻿@page "/reservation"
+@using Microsoft.EntityFrameworkCore
+@using RoomsReservation.Data.Tables
+@using RoomsReservation.Data
 
-@page "/reservation"
 @inject AppDbContext Db
-@inject AppState AppState
 
+<div class="layout">
 
+	<div class="left-panel">
+		<div class="floor-selector">
+			@foreach (var floor in Floors)
+			{
+				<button class="floor-btn"
+						@onclick="() => SelectedFloor = floor">
+					@floor
+				</button>
+			}
+		</div>
 
+		@if (SelectedFloor != null)
+		{
+			<FloorPlan FloorName="@SelectedFloor"
+					   Rooms="@FloorsData[SelectedFloor]"
+					   OnRoomSelected="RoomClicked" />
+		}
+
+	</div>
+
+	<div class="right-panel">
+		@if (SelectedRoom != null)
+		{
+			<h3>@SelectedRoom.RoomName</h3>
+		}
+	</div>
+</div>
+
+@code {
+	List<string> Floors = new();
+	private string newEquipment = string.Empty;
+	string? SelectedFloor;
+
+	Room? SelectedRoom;
+	Dictionary<string, List<Room>> FloorsData = new();
+
+	//Inicjalizacja danych o pokojach i piętrach
+	protected override async Task OnInitializedAsync()
+	{
+		var rooms = await Db.Rooms.ToListAsync();
+
+		Floors = await Db.Rooms.Select(r => r.Floor).Distinct().OrderBy(f => f).Select(f => $"Piętro {f}").ToListAsync();
+		FloorsData = GroupRoomsByFloor(rooms);
+
+		SelectedFloor = Floors.First();
+	}
+
+	//Pozyskanie danych z Bazy danych o pokoju, który został kliknięty
+	async Task RoomClicked(Room room)
+	{
+		if (room.RoomName is "WC1" or "WC2" or "Winda" or "Schody" or "Korytarz")
+			return;
+
+		SelectedRoom = await Db.Rooms.Include(r => r.RoomEquipments).ThenInclude(re => re.Equipment).FirstAsync(r => r.Id == room.Id);
+	}
+
+	//grupowanie pokoi względem pięter
+	private Dictionary<string, List<Room>> GroupRoomsByFloor(List<Room> rooms)
+	{
+		return rooms.GroupBy(r => r.Floor).ToDictionary
+		(
+			g => $"Piętro {g.Key}",
+			g => g.ToList()
+		);
+	}
+}

@@ -42,9 +42,9 @@
     cursor: pointer;
 }
 
-    .floor-btn:hover {
-        background: #d0e2ff;
-    }
+.floor-btn:hover {
+    background: #d0e2ff;
+}
 
 textarea, input {
     width: 100%;
