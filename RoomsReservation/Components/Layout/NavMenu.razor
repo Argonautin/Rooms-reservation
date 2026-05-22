@@ -37,11 +37,14 @@
                     </NavLink>
                 </div>
 
+                @if (AppState.CurrentUser?.IsProfessor == true)
+                {
                 <div class="nav-item px-3">
-                <NavLink class="nav-link" href="reports">
+                    <NavLink class="nav-link" href="reports">
                         <span class="bi" aria-hidden="true"></span> Eksport Raportu
                     </NavLink>
                 </div>
+                }
 
                 <div class="nav-item px-3">
                     <NavLink class="nav-link" href="building">
