@@ -12,5 +12,6 @@ namespace RoomsReservation.Data
         public DbSet<User> Users => Set<User>();
         public DbSet<RoomEquipment> RoomEquipments => Set<RoomEquipment>();
         public DbSet<Equipment> Equipments => Set<Equipment>();
+        public DbSet<Reservation> Reservations => Set<Reservation>();
     }
 }

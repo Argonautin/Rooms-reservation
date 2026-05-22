@@ -45,9 +45,8 @@ wwwroot\lib\bootstrap\dist\js\bootstrap.js.map
 wwwroot\lib\bootstrap\dist\js\bootstrap.min.js
 wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map
 Components\Layout\ReconnectModal.razor.js
-C:\Users\surwi\.nuget\packages\microsoft.aspnetcore.app.internal.assets\10.0.6\build\..\_framework\blazor.web.js
-C:\Users\surwi\.nuget\packages\microsoft.aspnetcore.app.internal.assets\10.0.6\build\..\_framework\blazor.server.js
-C:\Users\surwi\Desktop\Studia\Semestr lV\Programowanie funkcyjne\Rooms-reservation\RoomsReservation\wwwroot\app.css
+C:\Users\surwi\.nuget\packages\microsoft.aspnetcore.app.internal.assets\10.0.8\build\..\_framework\blazor.web.js
+C:\Users\surwi\.nuget\packages\microsoft.aspnetcore.app.internal.assets\10.0.8\build\..\_framework\blazor.server.js
 C:\Users\surwi\Desktop\Studia\Semestr lV\Programowanie funkcyjne\Rooms-reservation\RoomsReservation\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
 C:\Users\surwi\Desktop\Studia\Semestr lV\Programowanie funkcyjne\Rooms-reservation\RoomsReservation\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
 C:\Users\surwi\Desktop\Studia\Semestr lV\Programowanie funkcyjne\Rooms-reservation\RoomsReservation\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css
@@ -93,5 +92,6 @@ C:\Users\surwi\Desktop\Studia\Semestr lV\Programowanie funkcyjne\Rooms-reservati
 C:\Users\surwi\Desktop\Studia\Semestr lV\Programowanie funkcyjne\Rooms-reservation\RoomsReservation\wwwroot\lib\bootstrap\dist\js\bootstrap.min.js
 C:\Users\surwi\Desktop\Studia\Semestr lV\Programowanie funkcyjne\Rooms-reservation\RoomsReservation\wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map
 C:\Users\surwi\Desktop\Studia\Semestr lV\Programowanie funkcyjne\Rooms-reservation\RoomsReservation\Components\Layout\ReconnectModal.razor.js
-C:\Users\surwi\.nuget\packages\microsoft.aspnetcore.app.internal.assets\10.0.6\_framework\blazor.web.js
-C:\Users\surwi\.nuget\packages\microsoft.aspnetcore.app.internal.assets\10.0.6\_framework\blazor.server.js
+C:\Users\surwi\Desktop\Studia\Semestr lV\Programowanie funkcyjne\Rooms-reservation\RoomsReservation\wwwroot\app.css
+C:\Users\surwi\.nuget\packages\microsoft.aspnetcore.app.internal.assets\10.0.8\_framework\blazor.server.js
+C:\Users\surwi\.nuget\packages\microsoft.aspnetcore.app.internal.assets\10.0.8\_framework\blazor.web.js

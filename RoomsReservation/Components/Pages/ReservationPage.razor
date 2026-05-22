@@ -31,12 +31,19 @@
 		@if (SelectedRoom != null)
 		{
 			<h3>@SelectedRoom.RoomName</h3>
+
+			<h4>Rezerwacja sali</h4>
+			<button class="nextPage-btn" @onclick="GoToCalendar">Przejdź do kalendarza</button>
 		}
 	</div>
 </div>
 
 @code {
+
+	[Inject] NavigationManager Nav { get; set; }
+
 	List<string> Floors = new();
+
 	private string newEquipment = string.Empty;
 	string? SelectedFloor;
 
@@ -71,5 +78,13 @@
 			g => $"Piętro {g.Key}",
 			g => g.ToList()
 		);
+	}
+
+	void GoToCalendar()
+	{
+		if (SelectedRoom != null)
+		{
+			Nav.NavigateTo($"/Calendar?roomId={SelectedRoom.Id}");
+		}
 	}
 }

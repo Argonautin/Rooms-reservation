@@ -72,6 +72,7 @@ h1:focus {
 
 
 
+
 /* Login_Btn - przycisk logowania/rejestracji*/
 .login-btn {
     height: 40px;
@@ -292,19 +293,19 @@ svg {
     transition: background .2s ease, color .2s ease, transform .2s ease;
 }
 
-    .nav-btn:hover {
-        background: #f4f1eb;
-        color: #4e4e56;
-    }
+.nav-btn:hover {
+    background: #f4f1eb;
+    color: #4e4e56;
+}
 
-    .nav-btn:active {
-        transform: scale(0.96);
-    }
+.nav-btn:active {
+    transform: scale(0.96);
+}
 
-    .nav-btn:focus-visible {
-        outline: 2px solid #01696f;
-        outline-offset: 2px;
-    }
+.nav-btn:focus-visible {
+    outline: 2px solid #01696f;
+    outline-offset: 2px;
+}
 
 .month-label {
     text-align: center;

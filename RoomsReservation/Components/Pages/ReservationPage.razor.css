@@ -1,0 +1,67 @@
+﻿.layout {
+    display: flex;
+    width: 100%;
+    height: calc(100vh - 20px);
+    gap: 20px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.left-panel {
+    flex: 1;
+    max-width: 1000px;
+}
+
+.floor-selector {
+    margin-bottom: 10px;
+}
+
+.floor-btn {
+    margin-right: 10px;
+    padding: 8px 14px;
+    border: none;
+    background: #eee;
+    cursor: pointer;
+}
+
+.floor-btn:hover {
+    background: #d0e2ff;
+}
+
+.right-panel {
+    width: 250px;
+    border-left: 2px solid #ddd;
+    padding-left: 20px;
+    overflow-y: auto;
+}
+
+/*button to another website*/
+.nextPage-btn {
+    margin: 10px;
+    padding: 10px 5px;
+    border-radius: 50px;
+    cursor: pointer;
+    border: 0;
+    background-color: white;
+    box-shadow: rgb(0 0 0 / 10%) 0 0 8px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-size: 13px;
+    transition: all 0.5s ease;
+}
+
+.nextPage-btn:hover {
+    letter-spacing: 3px;
+    background-color: hsl(261deg 80% 48%);
+    color: hsl(0, 0%, 100%);
+    box-shadow: rgb(93 24 220) 0px 7px 10px 0px;
+}
+
+.nextPage-btn:active {
+    letter-spacing: 3px;
+    background-color: hsl(261deg 80% 48%);
+    color: hsl(0, 0%, 100%);
+    box-shadow: rgb(93 24 220) 0px 0px 0px 0px;
+    transform: translateY(10px);
+    transition: 100ms;
+}
