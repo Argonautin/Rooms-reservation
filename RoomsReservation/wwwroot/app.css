@@ -382,24 +382,19 @@ svg {
     opacity: .45;
 }
 
-.day-cell.active {
-    border-color: #01696f;
-    box-shadow: inset 0 0 0 1px #01696f;
-    background: #f4fbfb;
-}
 
 .details-header {
     margin-bottom: 1rem;
 }
 
-    .details-header h2 {
-        margin: 0;
-    }
+.details-header h2 {
+    margin: 0;
+}
 
-    .details-header p {
-        margin: .35rem 0 0;
-        color: #6d6d6d;
-    }
+.details-header p {
+    margin: .35rem 0 0;
+    color: #6d6d6d;
+}
 
 .event-list {
     display: grid;

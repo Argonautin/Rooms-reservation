@@ -35,7 +35,7 @@
                 @foreach (var cell in CalendarDays)
                 {
                     <button type="button"
-                            class="day-cell @(cell.IsCurrentMonth ? string.Empty : "muted") @(cell.Date.Date == selectedDate.Date ? "active" : string.Empty)"
+                            class="day-cell @(cell.IsCurrentMonth ? string.Empty : "muted")"
                             @onclick="() => SelectDate(cell.Date)">
                         <div class="day-top">
                             <span class="day-number">@cell.Date.Day</span>
@@ -48,7 +48,7 @@
                                 {
                                     @if (room.Status == true)
                                     {
-                                        
+
                                     }
                                     else
                                     {
@@ -66,64 +66,41 @@
         </article>
 
         <aside class="details-card">
-            @if (SelectedRoom == null)
-            {
-                <div class="details-header">
-                    <h2>@selectedDate.ToString("dd.MM.yyyy")</h2>
-                </div>
 
-                @if (rooms.Count == 0)
-                {
-                    <div class="empty-state">
-                        <p>Brak sal w bazie danych.</p>
-                    </div>
-                }
-                else
-                {
-                    <div class="event-list">
-                        @foreach (var room in rooms.OrderBy(r => r.RoomName))
-                        {
-                            <div class="event-card">
-                                <div class="event-time">
-                                    <strong>@room.RoomName</strong>
-                                    <span>Piętro @room.Floor</span>
-                                </div>
-                                <div class="event-content">
-                                    <h3>@(room.Status ? "Sala dostępna" : "Sala niedostępna")</h3>
-                                    <p>Pojemność: @room.Capacity</p>
-                                    <small>@(string.IsNullOrWhiteSpace(room.Professor) ? "Brak przypisanego prowadzącego" : room.Professor)</small>
-                                    @if (!string.IsNullOrWhiteSpace(room.Description))
-                                    {
-                                        <div class="room-description">@room.Description</div>
-                                    }
-                                </div>
-                            </div>
-                        }
-                    </div>
-                }
+            <div class="details-header">
+                <h2>@selectedDate.ToString("dd.MM.yyyy")</h2>
+            </div>
+
+            @if (rooms.Count == 0)
+            {
+                <div class="empty-state">
+                    <p>Brak sal w bazie danych.</p>
+                </div>
             }
             else
             {
-                <div class="details-header">
-                    <h2>@selectedDate.ToString("dd.MM.yyyy")</h2>
-                </div>
-
-                <div class="event-card">
-                    <div class="event-time">
-                        <strong>@SelectedRoom.RoomName</strong>
-                        <span>Piętro @SelectedRoom.Floor</span>
-                    </div>
-                    <div class="event-content">
-                        <h3>@(SelectedRoom.Status ? "Sala dostępna" : "Sala niedostępna")</h3>
-                        <p>Pojemność: @SelectedRoom.Capacity</p>
-                        <small>@(string.IsNullOrWhiteSpace(SelectedRoom.Professor) ? "Brak przypisanego prowadzącego" : SelectedRoom.Professor)</small>
-                        @if (!string.IsNullOrWhiteSpace(SelectedRoom.Description))
-                        {
-                            <div class="room-description">@SelectedRoom.Description</div>
-                        }
-                    </div>
+                <div class="event-list">
+                    @foreach (var room in rooms.OrderBy(r => r.RoomName))
+                    {
+                        <div class="event-card">
+                            <div class="event-time">
+                                <strong>@room.RoomName</strong>
+                                <span>Piętro @room.Floor</span>
+                            </div>
+                            <div class="event-content">
+                                <h3>@(room.Status ? "Sala dostępna" : "Sala niedostępna")</h3>
+                                <p>Pojemność: @room.Capacity</p>
+                                <small>@(string.IsNullOrWhiteSpace(room.Professor) ? "Brak przypisanego prowadzącego" : room.Professor)</small>
+                                @if (!string.IsNullOrWhiteSpace(room.Description))
+                                {
+                                    <div class="room-description">@room.Description</div>
+                                }
+                            </div>
+                        </div>
+                    }
                 </div>
             }
+            
         </aside>
     </section>
 </div>
@@ -132,7 +109,6 @@
     // Reservation 
     [Parameter][SupplyParameterFromQuery] public int? roomId { get; set; }
 
-    Room? SelectedRoom;
     List<Reservation> RoomReservations = new();
     List<User> Professors = new();
     int SelectedProfessorId;
@@ -149,6 +125,7 @@
     private string MonthTitle => currentMonth.ToString("MMMM yyyy", new System.Globalization.CultureInfo("pl-PL"));
 
 
+
     protected override async Task OnParametersSetAsync()
     {
         await LoadDataAsync(roomId);
@@ -156,14 +133,7 @@
 
     private async Task LoadDataAsync(int? roomId)
     {
-        if (roomId.HasValue)
-        {
-            await LoadRoomAsync(roomId.Value);
-        }
-        else
-        {
-            await LoadCalendarAsync();
-        }
+        await LoadCalendarAsync();
 
         BuildCalendar();
 
@@ -171,27 +141,9 @@
             selectedDate = currentMonth;
     }
 
-    private async Task LoadRoomAsync(int roomId)
-    {
-        SelectedRoom = await Db.Rooms
-            .Include(r => r.RoomEquipments)
-            .ThenInclude(re => re.Equipment)
-            .FirstOrDefaultAsync(r => r.Id == roomId);
-
-        RoomReservations = await Db.Reservations
-            .Where(r => r.RoomId == roomId)
-            .Include(r => r.User)
-            .ToListAsync();
-
-        Professors = await Db.Users
-            .Where(u => u.IsProfessor)
-            .OrderBy(u => u.LastName)
-            .ToListAsync();
-    }
 
     private async Task LoadCalendarAsync()
     {
-        SelectedRoom = null;
 
         rooms = await Db.Rooms
             .AsNoTracking()

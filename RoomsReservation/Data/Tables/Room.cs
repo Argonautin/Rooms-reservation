@@ -1,4 +1,6 @@
-﻿namespace RoomsReservation.Data.Tables
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace RoomsReservation.Data.Tables
 {
     public class Room
     {
@@ -11,5 +13,7 @@
         public string Description { get; set; } = string.Empty;
 
         public List<RoomEquipment> RoomEquipments { get; set; } = new();
+
+        [NotMapped] public int TimeSlot { get; set; }
     }
 }
