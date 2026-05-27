@@ -1,0 +1,47 @@
+﻿@page "/YourReservation"
+@using RoomsReservation.Data
+@using RoomsReservation.Data.Tables
+
+@inject NavigationManager Nav
+@inject AppDbContext Db
+@inject AppState AppState
+
+<h3>Twoje Rezerwacje</h3>
+
+@foreach (var reservation in UserReservations)
+{
+	<div class="reservation-card">
+		<h4>@reservation.Room.RoomName</h4>
+		<p>@reservation.Time_Reservation.StartTime - @reservation.Time_Reservation.EndTime</p>
+		<p>@reservation.DateReservation</p>
+
+		<button @onclick="() => DeleteReservation(reservation)">Usuń rezerwację</button>
+		</div>
+	}
+
+@code {
+
+	List<Reservation> UserReservations = new List<Reservation>();
+
+	protected override async Task OnInitializedAsync()
+	{
+		if (AppState.CurrentUser == null)
+		{
+			Nav.NavigateTo("/reservation");
+			return;
+		}
+
+		UserReservations = Db.Reservations
+			.Where(r => r.UserId == AppState.CurrentUser.Id)
+			.ToList();
+	}
+
+	private void DeleteReservation(Reservation reservation)
+	{
+		Db.Reservations.Remove(reservation);
+		Db.SaveChanges();
+		UserReservations.Remove(reservation);
+		StateHasChanged();
+	}
+
+}

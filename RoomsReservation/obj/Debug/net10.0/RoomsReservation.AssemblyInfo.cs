@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("RoomsReservation")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b9bde27fa04759dff4498a393c7d4671569af30e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4a2680b0970ce9eff9c77414961762e7e5ef55b6")]
 [assembly: System.Reflection.AssemblyProductAttribute("RoomsReservation")]
 [assembly: System.Reflection.AssemblyTitleAttribute("RoomsReservation")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

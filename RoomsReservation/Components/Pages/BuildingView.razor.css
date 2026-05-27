@@ -57,4 +57,9 @@ textarea, input {
     color: white;
     border: none;
     cursor: pointer;
+    transition: background 0.15s, transform 1s;
+}
+
+.save-btn:active {
+    background: #3e8e41;
 }

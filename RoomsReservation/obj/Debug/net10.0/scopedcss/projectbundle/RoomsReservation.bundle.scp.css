@@ -421,6 +421,11 @@ textarea[b-0eib2cjuxl], input[b-0eib2cjuxl] {
     color: white;
     border: none;
     cursor: pointer;
+    transition: background 0.15s, transform 1s;
+}
+
+.save-btn:active[b-0eib2cjuxl] {
+    background: #3e8e41;
 }
 /* /Components/Pages/FloorPlan.razor.rz.scp.css */
 .floor-wrapper[b-cgfrkif69r] {
@@ -485,8 +490,26 @@ textarea[b-0eib2cjuxl], input[b-0eib2cjuxl] {
 }
 
 .floor-selector[b-vorwbjd3j4] {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     margin-bottom: 10px;
 }
+
+.your-Reservation-btn[b-vorwbjd3j4] {
+    margin-left: auto;
+    padding: 8px 14px;
+    background: #4caf50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s, transform 1s;
+}
+
+.your-Reservation-btn:active[b-vorwbjd3j4] {
+    background: #3e8e41;
+}
+
 
 .floor-btn[b-vorwbjd3j4] {
     margin-right: 10px;
@@ -511,6 +534,11 @@ textarea[b-vorwbjd3j4], input[b-vorwbjd3j4] {
     color: white;
     border: none;
     cursor: pointer;
+    transition: background 0.15s, transform 1s;
+}
+
+.save-btn:active[b-vorwbjd3j4] {
+    background: #3e8e41;
 }
 
 

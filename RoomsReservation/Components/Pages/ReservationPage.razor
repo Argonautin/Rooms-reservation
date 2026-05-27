@@ -3,7 +3,7 @@
 @using RoomsReservation.Data.Tables
 @using RoomsReservation.Data
 
-
+@inject NavigationManager Nav
 @inject AppDbContext Db
 @inject AppState AppState
 
@@ -18,6 +18,15 @@
 					@floor
 				</button>
 			}
+
+			<button class="your-Reservation-btn" 
+				@onclick="@(() => Nav.NavigateTo("/YourReservation"))">
+				Twoje Rezerwacje
+			</button>
+		</div>
+
+		<div>
+			
 		</div>
 
 		@if (SelectedFloor != null)
@@ -40,11 +49,11 @@
 			<p>
 				@foreach (var time in TimesList)
 				{
-					<button class="slot-button 
-							@(BusyTimeIds.Contains(time.Id) ? "disable" : "")
-							@(SelectedTimeId == time.Id ? "active" : "")"
+					<button class="slot-button
+						@(BusyTimeIds.Contains(time.Id) ? "disable" : "")
+						@(SelectedTimeId == time.Id ? "active" : "")"
 							@onclick="() => SelectedTimeId = time.Id">
-							@time.StartTime.ToString(@"hh\:mm") - @time.EndTime.ToString(@"hh\:mm")
+						@time.StartTime.ToString(@"hh\:mm") - @time.EndTime.ToString(@"hh\:mm")
 					</button>
 				}
 			</p>
@@ -137,8 +146,8 @@
 			DateReservation = SelectedDate
 		};
 
-			Db.Reservations.Add(reservation);
+		Db.Reservations.Add(reservation);
 
-			await Db.SaveChangesAsync();
+		await Db.SaveChangesAsync();
 	}
 }

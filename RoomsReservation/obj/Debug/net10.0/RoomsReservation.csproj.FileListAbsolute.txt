@@ -219,5 +219,5 @@ C:\Users\surwi\Desktop\Studia\Semestr lV\Programowanie funkcyjne\Rooms-reservati
 C:\Users\surwi\Desktop\Studia\Semestr lV\Programowanie funkcyjne\Rooms-reservation\RoomsReservation\bin\Debug\net10.0\tr\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
 C:\Users\surwi\Desktop\Studia\Semestr lV\Programowanie funkcyjne\Rooms-reservation\RoomsReservation\bin\Debug\net10.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
 C:\Users\surwi\Desktop\Studia\Semestr lV\Programowanie funkcyjne\Rooms-reservation\RoomsReservation\bin\Debug\net10.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
-C:\Users\surwi\Desktop\Studia\Semestr lV\Programowanie funkcyjne\Rooms-reservation\RoomsReservation\obj\Debug\net10.0\compressed\6sh0qf0p3f-{0}-bhbace2kzf-bhbace2kzf.gz
-C:\Users\surwi\Desktop\Studia\Semestr lV\Programowanie funkcyjne\Rooms-reservation\RoomsReservation\obj\Debug\net10.0\compressed\m7lsb5plzb-{0}-bhbace2kzf-bhbace2kzf.gz
+C:\Users\surwi\Desktop\Studia\Semestr lV\Programowanie funkcyjne\Rooms-reservation\RoomsReservation\obj\Debug\net10.0\compressed\6sh0qf0p3f-{0}-0t57pevhk8-0t57pevhk8.gz
+C:\Users\surwi\Desktop\Studia\Semestr lV\Programowanie funkcyjne\Rooms-reservation\RoomsReservation\obj\Debug\net10.0\compressed\m7lsb5plzb-{0}-0t57pevhk8-0t57pevhk8.gz
