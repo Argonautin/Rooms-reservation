@@ -60,8 +60,8 @@
 			.FirstOrDefault() ?? "Brak danych";
 
 		LastReservationInfo = reservations
-			.OrderByDescending(r => r.Start)
-			.Select(r => $"{r.Start:dd.MM.yyyy HH:mm} – {r.Room.RoomName}")
+			.OrderByDescending(r => r.DateReservation)
+			.Select(r => $"{r.DateReservation:dd.MM.yyyy HH:mm} – {r.Room.RoomName}")
 			.FirstOrDefault() ?? "Brak rezerwacji";
 	}
 

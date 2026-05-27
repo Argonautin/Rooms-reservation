@@ -1,8 +1,8 @@
-﻿@page "/reservation"
-@using Microsoft.AspNetCore.Components.Forms
+﻿@page "/reservation" 
 @using Microsoft.EntityFrameworkCore
 @using RoomsReservation.Data.Tables
 @using RoomsReservation.Data
+
 
 @inject AppDbContext Db
 @inject AppState AppState
@@ -33,63 +33,66 @@
 		@if (SelectedRoom != null)
 		{
 			<h3>@SelectedRoom.RoomName</h3>
+			<h4>@SelectedDate.ToString("dd.MM.yyyy")</h4>
 
 			<label>Wybierz godzine</label>
 
+			<p>
+				@foreach (var time in TimesList)
+				{
+					<button class="slot-button 
+							@(BusyTimeIds.Contains(time.Id) ? "disable" : "")
+							@(SelectedTimeId == time.Id ? "active" : "")"
+							@onclick="() => SelectedTimeId = time.Id">
+							@time.StartTime.ToString(@"hh\:mm") - @time.EndTime.ToString(@"hh\:mm")
+					</button>
+				}
+			</p>
 
-			<InputRadioGroup @bind-Value="SelectedRoom.TimeSlot">
-				<ul>
-					<li>
-						<InputRadio Value="1" /> 8:00 - 9:30
-					</li>
-					<li>
-						<InputRadio Value="2" /> 9:45 - 11:15
-					</li>
-					<li>
-						<InputRadio Value="3" /> 11:30 - 13:00
-					</li>
-					<li>
-						<InputRadio Value="4" /> 13:30 - 15:00
-					</li>
-					<li>
-						<InputRadio Value="5" /> 15:15-16:45
-					</li>
-					<li>
-						<InputRadio Value="6" /> 17:00 - 18:30
-					</li>
-					<li>
-						<InputRadio Value="7" /> 18:45 - 20:15
-					</li>
-				</ul>
-			</InputRadioGroup>
-
-
-			<button class="save-btn" @onclick="SaveReservation">Zapisz</button>
+			
+			<button class="save-btn" @onclick="SaveReservation">Zarezerwuj</button>
 		}
 	</div>
 </div>
 
 @code {
+	// potem na samej górze przy @page trzeba dodać /{date}
+	//[Parameter]
+	public DateOnly Date = DateOnly.FromDateTime(DateTime.Today); // tutaj dodam datę zwracaną z kalendarza
+
+	public DateOnly SelectedDate;
+	public HashSet<int> BusyTimeIds = new();
 
 	List<string> Floors = new();
 
 	private string newEquipment = string.Empty;
-	public int TimeSlot { get; set; }
 	string? SelectedFloor;
 
-
 	Room? SelectedRoom;
-	Dictionary<string, List<Room>> FloorsData = new();
 
-	//Inicjalizacja danych o pokojach i piętrach
+	Dictionary<string, List<Room>> FloorsData = new();
+	List<Time_Reservation> TimesList = new();
+
+	int SelectedTimeId;
+
+	//Inicjalizacja danych
 	protected override async Task OnInitializedAsync()
 	{
+		SelectedDate = Date;
+
 		var rooms = await Db.Rooms.ToListAsync();
+		var times = await Db.Time_Reservation.ToListAsync();
 
 		Floors = await Db.Rooms.Select(r => r.Floor).Distinct().OrderBy(f => f).Select(f => $"Piętro {f}").ToListAsync();
+
 		FloorsData = GroupRoomsByFloor(rooms);
 
+		TimesList = times
+			.OrderBy(t => t.StartTime)
+			.ToList();
+
 		SelectedFloor = Floors.First();
+
 	}
 
 	//Pozyskanie danych z Bazy danych o pokoju, który został kliknięty
@@ -99,6 +102,12 @@
 			return;
 
 		SelectedRoom = await Db.Rooms.FirstAsync(r => r.Id == room.Id);
+
+		// pobieranie z bazy danych zajętych terminów dla wybranego pokoju i daty
+		BusyTimeIds = await Db.Reservations.Where(r =>
+			r.RoomId == SelectedRoom.Id &&
+			r.DateReservation == SelectedDate)
+			.Select(r => r.Time_ReservationId).ToHashSetAsync();
 	}
 
 	//grupowanie pokoi względem pięter
@@ -113,44 +122,23 @@
 
 	private async Task SaveReservation()
 	{
-		if (SelectedRoom != null)
+		if (SelectedRoom == null || SelectedTimeId == 0)
+			return;
+
+		var user = AppState.CurrentUser;
+
+		if (user == null) return;
+
+		var reservation = new Reservation
 		{
-			var user = AppState.CurrentUser;
-
-			if (user != null && SelectedRoom.TimeSlot > 0)
-			{
-				var (start, end) = GetTimeRange(SelectedRoom.TimeSlot);
-
-				var reservation = new Reservation
-					{
-						UserId = user.Id,
-						RoomId = SelectedRoom.Id,
-						Start = start,
-						End = end
-					};
-
-				Db.Reservations.Add(reservation);
-
-				var roomInDb = await Db.Rooms.FirstAsync(r => r.Id == SelectedRoom.Id);
-				roomInDb.Status = false;
-
-				await Db.SaveChangesAsync();
-			}
-		}
-	}
-
-	private (DateTime start, DateTime end) GetTimeRange(int slot)
-	{
-		return slot switch
-		{
-			1 => (DateTime.Today.AddHours(8), DateTime.Today.AddHours(9.5)),
-			2 => (DateTime.Today.AddHours(9.75), DateTime.Today.AddHours(11.25)),
-			3 => (DateTime.Today.AddHours(11.5), DateTime.Today.AddHours(13)),
-			4 => (DateTime.Today.AddHours(13.5), DateTime.Today.AddHours(15)),
-			5 => (DateTime.Today.AddHours(15.25), DateTime.Today.AddHours(16.75)),
-			6 => (DateTime.Today.AddHours(17), DateTime.Today.AddHours(18.5)),
-			7 => (DateTime.Today.AddHours(18.75), DateTime.Today.AddHours(20.25)),
-			_ => throw new Exception("Niepoprawny slot")
+			UserId = user.Id,
+			RoomId = SelectedRoom.Id,
+			Time_ReservationId = SelectedTimeId,
+			DateReservation = SelectedDate
 		};
+
+			Db.Reservations.Add(reservation);
+
+			await Db.SaveChangesAsync();
 	}
 }

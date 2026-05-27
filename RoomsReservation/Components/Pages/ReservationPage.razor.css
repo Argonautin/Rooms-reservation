@@ -42,9 +42,9 @@
     cursor: pointer;
 }
 
-    .floor-btn:hover {
-        background: #d0e2ff;
-    }
+.floor-btn:hover {
+    background: #d0e2ff;
+}
 
 textarea, input {
     width: 100%;
@@ -57,4 +57,40 @@ textarea, input {
     color: white;
     border: none;
     cursor: pointer;
+}
+
+
+.slot-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+}
+
+.slot-button {
+    margin: 10px 25px;
+    padding: 10px 16px;
+    border: 1px solid #ccc;
+    background: #f3f3f3;
+    cursor: pointer;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: 0.2s;
+}
+
+.slot-button:hover {
+    background: #e6e6e6;
+}
+
+.slot-button.active {
+    background: #4caf50;
+    color: white;
+    border-color: #3e8e41;
+}
+
+.slot-button.disable {
+    pointer-events: none;
+    background-color: #ff4d4d;
+    color: white;
+    cursor: not-allowed;
 }

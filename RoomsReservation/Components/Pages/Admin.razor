@@ -2,7 +2,7 @@
 @using RoomsReservation.Data.Tables;
 
 @page "/dodaj_sale"
-@* @rendermode InteractiveServer
+@rendermode InteractiveServer
 @inject AppDbContext Db
 @inject AppState AppState
 
@@ -91,4 +91,4 @@
 
         Rooms = Db.Rooms.ToList();
     }
-} *@
+}
