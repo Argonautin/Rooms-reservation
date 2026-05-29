@@ -415,18 +415,7 @@ textarea[b-0eib2cjuxl], input[b-0eib2cjuxl] {
     margin-bottom: 10px;
 }
 
-.save-btn[b-0eib2cjuxl] {
-    padding: 8px 14px;
-    background: #4caf50;
-    color: white;
-    border: none;
-    cursor: pointer;
-    transition: background 0.15s, transform 1s;
-}
 
-.save-btn:active[b-0eib2cjuxl] {
-    background: #3e8e41;
-}
 /* /Components/Pages/FloorPlan.razor.rz.scp.css */
 .floor-wrapper[b-cgfrkif69r] {
     position: relative;

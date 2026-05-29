@@ -12,12 +12,11 @@
 {
 	<div class="reservation-card">
 		<h4>@reservation.Room.RoomName</h4>
-		<p>@reservation.Time_Reservation.StartTime - @reservation.Time_Reservation.EndTime</p>
-		<p>@reservation.DateReservation</p>
+		<p>@reservation.Time_Reservation.StartTime - @reservation.Time_Reservation.EndTime dla dnia @reservation.DateReservation</p>
 
 		<button @onclick="() => DeleteReservation(reservation)">Usuń rezerwację</button>
-		</div>
-	}
+	</div>
+}
 
 @code {
 

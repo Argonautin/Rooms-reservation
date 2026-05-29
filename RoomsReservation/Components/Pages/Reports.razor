@@ -1,107 +1,72 @@
-﻿@using RoomsReservation.Data
+﻿@page "/reports"
+@using RoomsReservation.Data
+@using RoomsReservation.Data.Tables
+@using Microsoft.EntityFrameworkCore;
 
-@page "/reports"
-
+@inject NavigationManager Nav
 @inject AppDbContext Db
 @inject AppState AppState
+@inject IJSRuntime JS
 
-<h3>Reports</h3>
+<div id="report-content">
+	<div>
+		<p><h2>Twoje Statystyki:</h2></p>
+		<h3>
+			Łączna liczba twoich rezerwacji: @ReservationCount
+		</h3>
+		<h3>
+			Łączna liczba zarezerwowanych zarezerwowanych twoich: @TotalHours
+		</h3>
 
-<h2>Raport wykorzystania sal – @AppState.CurrentUser?.FirstName @AppState.CurrentUser?.LastName</h2>
+		<h3>
+			Twoja najczęściej rezerwowana sala: @MostReservedRoom
+		</h3>
+	</div><br><br><br><br>
 
-<ul>
-	<li>Łączna liczba rezerwacji: @UserReservationsCount</li>
-	<li>Najczęściej rezerwowana sala: @UserMostUsedRoom</li>
-	<li>Ostatnia rezerwacja: @LastReservationInfo</li>
-</ul>
+	<div>
+		<p><h2>Statystyki ogólne:</h2></p>
+		<h3>
+			Łączna liczba  rezerwacji: @GlobalReservationCount
+		</h3>
+		<h3>
+			Łączna liczba godzin zarezerwowanych: @GlobalTotalHours
+		</h3>
 
+		<h3>
+			Najczęściej rezerwowana sala: @GlobalMostReservedRoom
+		</h3>
+	</div>
+</div><br><br>
 
-<h2>Statystyki ogólne</h2>
-
-<ul>
-	<li>Łączna liczba rezerwacji: @TotalReservations</li>
-	<li>Najczęściej używana sala: @MostUsedRoom</li>
-	<li>Najbardziej aktywny użytkownik: @MostActiveUser</li>
-</ul>
-
-<button class="btn" @onclick="ExportGlobalCsv">Eksport CSV (globalny)</button>
-<button class="btn" @onclick="ExportGlobalPdf">Eksport PDF (globalny)</button>
+<button class="save-btn" @onclick="PDFExport">Exportuj do PDF</button>
 
 @code {
-	private int UserReservationsCount;
-	private string UserMostUsedRoom = "";
-	private string LastReservationInfo = "";
+	List<Reservation> UserReservations = new List<Reservation>();
+	List<Reservation> GlobalReservations = new List<Reservation>();
 
-	private int TotalReservations;
-	private string MostUsedRoom = "";
-	private string MostActiveUser = "";
+	public int ReservationCount => UserReservations.Count;
+	public double TotalHours => UserReservations.Sum(r => (r.Time_Reservation.EndTime - r.Time_Reservation.StartTime).TotalHours);
+	public string MostReservedRoom => UserReservations.GroupBy(r => r.Room).OrderByDescending(g => g.Count()).Select(g => g.Key.RoomName).FirstOrDefault() ?? "Brak danych";
 
-	protected override void OnInitialized()
+	public int GlobalReservationCount => GlobalReservations.Count;
+	public double GlobalTotalHours => GlobalReservations.Sum(r => (r.Time_Reservation.EndTime - r.Time_Reservation.StartTime).TotalHours);
+	public string GlobalMostReservedRoom => GlobalReservations.GroupBy(r => r.Room).OrderByDescending(g => g.Count()).Select(g => g.Key.RoomName).FirstOrDefault() ?? "Brak danych";
+
+
+	protected override async Task OnInitializedAsync()
 	{
-		LoadUserStats();
-		LoadGlobalStats();
+		if (AppState.CurrentUser == null)
+		{
+			Nav.NavigateTo("/reservation");
+			return;
+		}
+
+		UserReservations = Db.Reservations.Include(r => r.Time_Reservation).Include(r => r.Room).Where(r => r.UserId == AppState.CurrentUser.Id).ToList();
+		GlobalReservations = Db.Reservations.Include(r => r.Time_Reservation).Include(r => r.Room).ToList();
 	}
 
-	private void LoadUserStats()
+	public async Task PDFExport()
 	{
-
-		var userId = AppState.CurrentUser?.Id;
-
-		var reservations = Db.Reservations
-			.Where(r => r.UserId == userId)
-			.ToList();
-
-		UserReservationsCount = reservations.Count;
-
-		UserMostUsedRoom = reservations
-			.GroupBy(r => r.Room.RoomName)
-			.OrderByDescending(g => g.Count())
-			.Select(g => $"{g.Key} ({g.Count()} rezerwacji)")
-			.FirstOrDefault() ?? "Brak danych";
-
-		LastReservationInfo = reservations
-			.OrderByDescending(r => r.DateReservation)
-			.Select(r => $"{r.DateReservation:dd.MM.yyyy HH:mm} – {r.Room.RoomName}")
-			.FirstOrDefault() ?? "Brak rezerwacji";
+		await JS.InvokeVoidAsync("downloadPdf");
 	}
-
-	private void LoadGlobalStats()
-	{
-		var reservations = Db.Reservations.ToList();
-
-		TotalReservations = reservations.Count;
-
-		MostUsedRoom = reservations
-			.GroupBy(r => r.Room.RoomName)
-			.OrderByDescending(g => g.Count())
-			.Select(g => $"{g.Key} ({g.Count()} rezerwacji)")
-			.FirstOrDefault() ?? "Brak danych";
-
-		MostActiveUser = reservations
-			.GroupBy(r => r.User.LastName)
-			.OrderByDescending(g => g.Count())
-			.Select(g => $"{g.Key} ({g.Count()} rezerwacji)")
-			.FirstOrDefault() ?? "Brak danych";
-	}
-
-	private void ExportUserCsv()
-	{
-		//Message = "Wygenerowano CSV dla użytkownika (tu dodasz logikę eksportu).";
-	}
-
-	private void ExportUserPdf()
-	{
-		//Message = "Wygenerowano PDF dla użytkownika (tu dodasz logikę eksportu).";
-	}
-
-	private void ExportGlobalCsv()
-	{
-		//Message = "Wygenerowano globalny CSV (tu dodasz logikę eksportu).";
-	}
-
-	private void ExportGlobalPdf()
-	{
-		//Message = "Wygenerowano globalny PDF (tu dodasz logikę eksportu).";
-	}
-
 }
