@@ -12,13 +12,52 @@
             <p class="eyebrow"></p>
             <h1>Kalendarz sal</h1>
         </div>
-
-        
     </section>
 
     <section class="calendar-layout">
 
         <article class="calendar-card">
+            <div class="filters-panel">
+                <h3>Wyszukiwanie dostępnych sal</h3>
+
+                <div class="filter-grid">
+                    <div>
+                        <label>Data</label>
+                        <input type="date" @bind="filterDate" @bind:format="yyyy-MM-dd" />
+                    </div>
+
+                    <div>
+                        <label>Od godziny</label>
+                        <input type="time" @bind="filterStartTime" @bind:format="HH:mm" />
+                    </div>
+
+                    <div>
+                        <label>Do godziny</label>
+                        <input type="time" @bind="filterEndTime" @bind:format="HH:mm" />
+                    </div>
+
+                    <div>
+                        <label>Piętro</label>
+                        <input type="number" @bind="filterFloor" />
+                    </div>
+
+                    <div>
+                        <label>Minimalna pojemność</label>
+                        <input type="number" @bind="filterCapacity" />
+                    </div>
+
+                    <div>
+                        <label>Wyposażenie</label>
+                        <input type="text" @bind="filterEquipment" placeholder="np. projektor" />
+                    </div>
+                </div>
+
+                <div class="filter-actions">
+                    <button type="button" class="nextPage-btn" @onclick="ApplyFilters">Szukaj</button>
+                    <button type="button" class="nextPage-btn" @onclick="ResetFilters">Wyczyść</button>
+                </div>
+            </div>
+
             <div class="calendar-toolbar">
                 <button type="button" class="nav-btn" aria-label="Poprzedni miesiąc" @onclick="PreviousMonth">←</button>
                 <div class="month-label">@MonthTitle</div>
@@ -44,18 +83,18 @@
                         <div class="day-body">
                             @if (rooms.Any())
                             {
-                                @foreach (var room in rooms)
+                                @foreach (var room in filteredRooms)
                                 {
                                     @if (room.Status == true)
                                     {
-
+                                        <div class="mini-event">
+                                            <strong>@room.RoomName</strong>
+                                            <span>Piętro @room.Floor · @room.Capacity miejsc</span>
+                                        </div>
                                     }
                                     else
                                     {
-                                    <div class="mini-event">
-                                        <strong>@room.RoomName</strong>
-                                        <span>Piętro @room.Floor · @room.Capacity miejsc</span>
-                                    </div>
+                                    
                                     }
                                 }
                             }
@@ -109,17 +148,25 @@
     // Reservation 
     [Parameter][SupplyParameterFromQuery] public int? roomId { get; set; }
 
-    List<Reservation> RoomReservations = new();
-    List<User> Professors = new();
-    int SelectedProfessorId;
+    private Room? SelectedRoom;
+    private List<Room> rooms = new();
+    private List<Room> filteredRooms = new();
+    private List<Reservation> reservations = new();
+    private List<CalendarDayCell> CalendarDays = new();
+    private List<Equipments> EquipmentList = new();
+    private List<RoomEquipment> RoomEquipments = new();
 
     private DateTime currentMonth = new(DateTime.Today.Year, DateTime.Today.Month, 1);
     private DateTime selectedDate = DateTime.Today;
-    private List<Room> rooms = new();
-    private List<CalendarDayCell> CalendarDays = new();
 
+    private DateTime filterDate = DateTime.Today;
+    private DateTime filterStartTime = DateTime.Today.Date.AddHours(8);
+    private DateTime filterEndTime = DateTime.Today.Date.AddHours(10);
+    private int? filterFloor;
+    private int? filterCapacity;
+
+    private string? filterEquipment;
     private static readonly string[] DayNames = ["Pon", "Wt", "Śr", "Czw", "Pt", "Sob", "Nd"];
-
     private string MonthTitle => currentMonth.ToString("MMMM yyyy", new System.Globalization.CultureInfo("pl-PL"));
 
 
@@ -148,7 +195,40 @@
             .OrderBy(r => r.RoomName)
             .ToListAsync();
 
+        EquipmentList = await Db.Equipments.OrderBy(r => r.EquipmentName).ToListAsync();
+        RoomEquipments = await Db.RoomEquipments.ToListAsync();
+
     }
+
+    private void ApplyFilters()
+    {
+        selectedDate = filterDate.Date;
+
+        var start = selectedDate.Date.Add(filterStartTime.TimeOfDay);
+        var end = selectedDate.Date.Add(filterEndTime.TimeOfDay);
+
+        if (end <= start)
+        {
+            end = start.AddHours(1);
+            filterEndTime = end;
+        }
+
+        filteredRooms = rooms
+            .Where(r => r.Status)
+            .Where(r => !filterFloor.HasValue || r.Floor == filterFloor.Value)
+            .Where(r => !filterCapacity.HasValue || r.Capacity >= filterCapacity.Value)
+            .Where(r => (EquipmentList != null && filterEquipment != null &&
+            EquipmentList.Any(re =>
+            re.EquipmentName != null &&
+            re.EquipmentName.Contains(filterEquipment, StringComparison.OrdinalIgnoreCase) && 
+            re.RoomEquipments.Any(re => re.RoomId == r.Id))))
+            .OrderBy(r => r.RoomName)
+            .ToList();
+
+        SelectedRoom = null;
+        filterEquipment = null;
+    }
+
 
     private void BuildCalendar()
     {
@@ -168,6 +248,20 @@
             });
         }
     }
+
+    private void ResetFilters()
+    {
+        filterDate = DateTime.Today;
+        selectedDate = DateTime.Today;
+        filterStartTime = DateTime.Today.Date.AddHours(8);
+        filterEndTime = DateTime.Today.Date.AddHours(10);
+        filterFloor = null;
+        filterCapacity = null;
+        filterEquipment = null;
+
+        ApplyFilters();
+    }
+
 
     private async Task PreviousMonth()
     {

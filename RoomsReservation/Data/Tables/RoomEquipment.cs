@@ -8,6 +8,6 @@
         public Room Room { get; set; } = null!;
 
         public int EquipmentId { get; set; }
-        public Equipment Equipment { get; set; } = null!;
+        public Equipments Equipment { get; set; } = null!;
     }
 }
