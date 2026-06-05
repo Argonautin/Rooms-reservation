@@ -395,6 +395,9 @@ svg {
     opacity: .45;
 }
 
+.day-cell:active {
+    border-color: #3e8e41
+}
 
 .details-header {
     margin-bottom: 1rem;

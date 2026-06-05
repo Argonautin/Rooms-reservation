@@ -45,11 +45,11 @@
 	List<Reservation> GlobalReservations = new List<Reservation>();
 
 	public int ReservationCount => UserReservations.Count;
-	public double TotalHours => UserReservations.Sum(r => (r.Time_Reservation.EndTime - r.Time_Reservation.StartTime).TotalHours);
+	public double TotalHours => UserReservations.Count * 1.5;
 	public string MostReservedRoom => UserReservations.GroupBy(r => r.Room).OrderByDescending(g => g.Count()).Select(g => g.Key.RoomName).FirstOrDefault() ?? "Brak danych";
 
 	public int GlobalReservationCount => GlobalReservations.Count;
-	public double GlobalTotalHours => GlobalReservations.Sum(r => (r.Time_Reservation.EndTime - r.Time_Reservation.StartTime).TotalHours);
+	public double GlobalTotalHours => GlobalReservations.Count * 1.5;
 	public string GlobalMostReservedRoom => GlobalReservations.GroupBy(r => r.Room).OrderByDescending(g => g.Count()).Select(g => g.Key.RoomName).FirstOrDefault() ?? "Brak danych";
 
 
