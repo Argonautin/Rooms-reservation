@@ -186,8 +186,6 @@ C:\Users\surwi\Desktop\Studia\Semestr lV\Programowanie funkcyjne\Rooms-reservati
 C:\Users\surwi\Desktop\Studia\Semestr lV\Programowanie funkcyjne\Rooms-reservation\RoomsReservation\obj\Debug\net10.0\compressed\jffvxj2e8a-{0}-63fj8s7r0e-63fj8s7r0e.gz
 C:\Users\surwi\Desktop\Studia\Semestr lV\Programowanie funkcyjne\Rooms-reservation\RoomsReservation\obj\Debug\net10.0\compressed\xgp3jvdume-{0}-0j3bgjxly4-0j3bgjxly4.gz
 C:\Users\surwi\Desktop\Studia\Semestr lV\Programowanie funkcyjne\Rooms-reservation\RoomsReservation\obj\Debug\net10.0\compressed\5o5ak397t2-{0}-abdmv1u4y3-abdmv1u4y3.gz
-C:\Users\surwi\Desktop\Studia\Semestr lV\Programowanie funkcyjne\Rooms-reservation\RoomsReservation\obj\Debug\net10.0\compressed\o2un90687h-{0}-ej96puwv3k-ej96puwv3k.gz
-C:\Users\surwi\Desktop\Studia\Semestr lV\Programowanie funkcyjne\Rooms-reservation\RoomsReservation\obj\Debug\net10.0\compressed\89qivgb0w5-{0}-cj5793hgrt-cj5793hgrt.gz
 C:\Users\surwi\Desktop\Studia\Semestr lV\Programowanie funkcyjne\Rooms-reservation\RoomsReservation\obj\Debug\net10.0\staticwebassets.build.json
 C:\Users\surwi\Desktop\Studia\Semestr lV\Programowanie funkcyjne\Rooms-reservation\RoomsReservation\obj\Debug\net10.0\staticwebassets.build.json.cache
 C:\Users\surwi\Desktop\Studia\Semestr lV\Programowanie funkcyjne\Rooms-reservation\RoomsReservation\obj\Debug\net10.0\staticwebassets.development.json
@@ -262,4 +260,6 @@ C:\Users\surwi\Desktop\Studia\Semestr lV\Programowanie funkcyjne\Rooms-reservati
 C:\Users\surwi\Desktop\Studia\Semestr lV\Programowanie funkcyjne\Rooms-reservation\RoomsReservation\bin\Debug\net10.0\runtimes\win-x86\native\libwinpthread-1.dll
 C:\Users\surwi\Desktop\Studia\Semestr lV\Programowanie funkcyjne\Rooms-reservation\RoomsReservation\bin\Debug\net10.0\runtimes\win-x86\native\qpdf.dll
 C:\Users\surwi\Desktop\Studia\Semestr lV\Programowanie funkcyjne\Rooms-reservation\RoomsReservation\bin\Debug\net10.0\runtimes\win-x86\native\zlib1.dll
-C:\Users\surwi\Desktop\Studia\Semestr lV\Programowanie funkcyjne\Rooms-reservation\RoomsReservation\obj\Debug\net10.0\compressed\neo0p0qsyc-{0}-0erdka6qsv-0erdka6qsv.gz
+C:\Users\surwi\Desktop\Studia\Semestr lV\Programowanie funkcyjne\Rooms-reservation\RoomsReservation\obj\Debug\net10.0\compressed\o2un90687h-{0}-wyu7y4jcvb-wyu7y4jcvb.gz
+C:\Users\surwi\Desktop\Studia\Semestr lV\Programowanie funkcyjne\Rooms-reservation\RoomsReservation\obj\Debug\net10.0\compressed\89qivgb0w5-{0}-wfr2hj6447-wfr2hj6447.gz
+C:\Users\surwi\Desktop\Studia\Semestr lV\Programowanie funkcyjne\Rooms-reservation\RoomsReservation\obj\Debug\net10.0\compressed\neo0p0qsyc-{0}-krizi11qhh-krizi11qhh.gz

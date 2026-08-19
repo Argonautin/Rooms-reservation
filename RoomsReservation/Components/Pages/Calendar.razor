@@ -74,7 +74,7 @@
                 @foreach (var cell in CalendarDays)
                 {
                     <button type="button"
-                            class="day-cell @(cell.IsCurrentMonth ? string.Empty : "muted")"
+                            class="day-cell @(cell.IsCurrentMonth ? "" : "muted")  @(selectedDate == cell.Date ? "selected" : "")"
                             @onclick="() => SelectDate(cell.Date)">
                         <div class="day-top">
                             <span class="day-number">@cell.Date.Day</span>
@@ -85,9 +85,9 @@
                             {
                                 @foreach (var room in filteredRooms)
                                 {
-									if (BusyDateRooms.Contains(room.Id))
+                                    if (BusyDateRooms.Contains(room.Id))
                                     {
-                                        
+
                                     }
                                     else
                                     {
@@ -120,16 +120,20 @@
             else
             {
                 <div class="event-list">
-                    @foreach (var room in rooms.OrderBy(r => r.RoomName))
+                    @foreach (var room in rooms)
                     {
-                        <div class="event-card">
+                        <div type="button" class="event-card @(SelectedRoom == room ? "selected" : "")"
+                             @onclick="() => SelectRoom(room)">
                             <div class="event-time">
                                 <strong>@room.RoomName</strong>
                                 <p><span>Piętro @room.Floor</span></p>
+                                <div class="btn-to-reservation @(isRoomClicked() && SelectedRoom == room ? "active" : "")">
+                                    <button type="button" class="badge bg-success">Zarezerwuj</button>
+                                </div>
                             </div>
                             <div class="event-content">
                                 <h3>
-                                    @if(BusyDateRooms.Contains(room.Id))
+                                    @if (BusyDateRooms.Contains(room.Id))
                                     {
                                         <span class="badge bg-danger">Zajęta</span>
                                     }
@@ -149,7 +153,7 @@
                     }
                 </div>
             }
-            
+
         </aside>
     </section>
 </div>
@@ -206,6 +210,8 @@
             .OrderBy(r => r.RoomName)
             .ToListAsync();
 
+
+
         EquipmentList = await Db.Equipments.OrderBy(r => r.EquipmentName).ToListAsync();
         RoomEquipments = await Db.RoomEquipments.ToListAsync();
 
@@ -219,21 +225,21 @@
     private async Task ApplyFilters()
     {
 
-        
+
         var query = Db.Rooms
             .Include(r => r.RoomEquipments)
                 .ThenInclude(re => re.Equipment)
             .AsQueryable();
 
-        
+
         if (filterFloor.HasValue)
             query = query.Where(r => r.Floor == filterFloor.Value);
 
-      
+
         if (filterCapacity.HasValue)
             query = query.Where(r => r.Capacity >= filterCapacity.Value);
 
-        
+
         if (!string.IsNullOrWhiteSpace(filterEquipment))
         {
             string eq = filterEquipment.Trim().ToLower();
@@ -244,10 +250,10 @@
             );
         }
 
-        
+
         var roomsAfterBasicFilters = await query.ToListAsync();
 
-        
+
         DateOnly selectedDateOnly = DateOnly.FromDateTime(filterDate);
 
         var reservationsForDay = await Db.Reservations
@@ -255,14 +261,14 @@
             .Where(r => r.DateReservation == selectedDateOnly)
             .ToListAsync();
 
-        
+
         var filterStart = filterStartTime.TimeOfDay;
         var filterEnd = filterEndTime.TimeOfDay;
 
         if (filterEnd <= filterStart)
             filterEnd = filterStart.Add(TimeSpan.FromHours(1));
 
-        
+
         BusyDateRooms = reservationsForDay
             .Where(r =>
                 r.Time_Reservation.StartTime < filterEnd &&
@@ -271,7 +277,7 @@
             .Select(r => r.RoomId)
             .ToHashSet();
 
-        
+
         filteredRooms = roomsAfterBasicFilters
             .Where(r => !BusyDateRooms.Contains(r.Id))
             .OrderBy(r => r.RoomName)
@@ -328,12 +334,26 @@
 
     private async Task SelectDate(DateTime date)
     {
-		selectedDate = date;
+        selectedDate = date;
 
         DateOnly SelectedDateOnly = DateOnly.FromDateTime(date);
 
         BusyDateRooms = await Db.Reservations.Where(r =>
         r.DateReservation == (SelectedDateOnly)
         ).Select(r => r.RoomId).ToHashSetAsync();
+    }
+
+    private void SelectRoom(Room room)
+    {
+        SelectedRoom = room;
+    }
+
+    private bool isRoomClicked()
+    {
+        if (SelectedRoom != null)
+        {
+            return true;
+        }
+        return false;
     }
 }

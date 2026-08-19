@@ -393,9 +393,10 @@ svg {
 
 .day-cell.muted {
     opacity: .45;
+    pointer-events: none;
 }
 
-.day-cell:active {
+.day-cell.selected {
     border-color: #3e8e41
 }
 
@@ -425,6 +426,18 @@ svg {
     border-radius: 16px;
     padding: 1rem;
     background: #fcfbf9;
+}
+
+.event-card.selected {
+    border-color: #3e8e41
+}
+
+.btn-to-reservation {
+    display: none;
+}
+
+.btn-to-reservation.active{
+    display:block;
 }
 
 @media (max-width: 1080px) {
