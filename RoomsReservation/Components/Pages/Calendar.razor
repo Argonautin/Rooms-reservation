@@ -3,6 +3,8 @@
 @using RoomsReservation.Data
 @using RoomsReservation.Data.Tables
 @inject AppDbContext Db
+@inject NavigationManager Nav
+@inject AppState AppState
 
 <PageTitle>Kalendarz sal</PageTitle>
 
@@ -128,7 +130,9 @@
                                 <strong>@room.RoomName</strong>
                                 <p><span>Piętro @room.Floor</span></p>
                                 <div class="btn-to-reservation @(isRoomClicked() && SelectedRoom == room ? "active" : "")">
-                                    <button type="button" class="badge bg-success">Zarezerwuj</button>
+                                    <button type="button" class="badge bg-success" @onclick="GoToReservation">
+                                        Zarezerwuj
+                                    </button>
                                 </div>
                             </div>
                             <div class="event-content">
@@ -341,6 +345,8 @@
         BusyDateRooms = await Db.Reservations.Where(r =>
         r.DateReservation == (SelectedDateOnly)
         ).Select(r => r.RoomId).ToHashSetAsync();
+
+        SelectedRoom = null;
     }
 
     private void SelectRoom(Room room)
@@ -355,5 +361,15 @@
             return true;
         }
         return false;
+    }
+    private void GoToReservation()
+    {
+        if (SelectedRoom == null)
+            return;
+
+        AppState.SelectedRoom = SelectedRoom;
+        AppState.SelectedDate = DateOnly.FromDateTime(selectedDate);
+
+        Nav.NavigateTo("/reservation");
     }
 }

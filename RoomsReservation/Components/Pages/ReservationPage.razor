@@ -8,7 +8,6 @@
 @inject AppState AppState
 
 <div class="layout">
-
 	<div class="left-panel">
 		<div class="floor-selector">
 			@foreach (var floor in Floors)
@@ -65,10 +64,6 @@
 </div>
 
 @code {
-	// potem na samej górze przy @page trzeba dodać /{date}
-	//[Parameter]
-	public DateOnly Date = DateOnly.FromDateTime(DateTime.Today); // tutaj dodam datę zwracaną z kalendarza
-
 	public DateOnly SelectedDate;
 	public HashSet<int> BusyTimeIds = new();
 
@@ -87,7 +82,8 @@
 	//Inicjalizacja danych
 	protected override async Task OnInitializedAsync()
 	{
-		SelectedDate = Date;
+		SelectedDate = AppState.SelectedDate ?? DateOnly.FromDateTime(DateTime.Today);
+		SelectedRoom = AppState.SelectedRoom;
 
 		var rooms = await Db.Rooms.ToListAsync();
 		var times = await Db.Time_Reservation.ToListAsync();

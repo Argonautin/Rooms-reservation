@@ -6,6 +6,9 @@ namespace RoomsReservation.Data
     {
         public User? CurrentUser { get; private set; }
 
+        public DateOnly? SelectedDate { get; set; }
+        public Room? SelectedRoom { get; set; }
+
         public event Action? OnChange;
 
         public void SetUser(User user)
