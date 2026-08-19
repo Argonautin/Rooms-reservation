@@ -91,7 +91,7 @@ textarea[b-vorwbjd3j4], input[b-vorwbjd3j4] {
 }
 
 .slot-button[b-vorwbjd3j4] {
-    margin: 10px 25px;
+    margin: 10px 10px;
     padding: 10px 16px;
     border: 1px solid #ccc;
     background: #f3f3f3;
@@ -116,4 +116,18 @@ textarea[b-vorwbjd3j4], input[b-vorwbjd3j4] {
     background-color: #ff4d4d;
     color: white;
     cursor: not-allowed;
+}
+
+.time-slot[b-vorwbjd3j4] {
+    display: flex;
+}
+
+.prof-info.disable[b-vorwbjd3j4] {
+    margin: 10px 0;
+    padding: 10px 16px;
+    border: 1px solid #ccc;
+    background: #f3f3f3;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: 0.2s;
 }
