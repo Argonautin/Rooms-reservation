@@ -8,6 +8,7 @@
 @inject AppState AppState
 @inject IJSRuntime JS
 
+
 <div id="report-content">
 	<div>
 		<p><h2>Twoje Statystyki:</h2></p>
@@ -39,10 +40,18 @@
 </div><br><br>
 
 <button class="save-btn" @onclick="PDFExport">Exportuj do PDF</button>
+<button class="save-btn" @onclick="ExportToCSV">Exportuj do CSV</button>
+
+@if (isLoading)
+{
+	<p>Generowanie pliku...</p>
+}
 
 @code {
 	List<Reservation> UserReservations = new List<Reservation>();
 	List<Reservation> GlobalReservations = new List<Reservation>();
+
+    private bool isLoading = false;
 
 	public int ReservationCount => UserReservations.Count;
 	public double TotalHours => UserReservations.Count * 1.5;
@@ -68,5 +77,48 @@
 	public async Task PDFExport()
 	{
 		await JS.InvokeVoidAsync("downloadPdf");
+	}
+
+	public async Task ExportToCSV()
+	{
+		isLoading = true;
+		StateHasChanged();
+
+		try
+		{
+			var sb = new System.Text.StringBuilder();
+
+			// Nagłówek CSV
+			sb.AppendLine("ID;Użytkownik;Sala;Data;Rozpoczęcie;Zakończenie");
+
+			// Dane (możesz wybrać UserReservations lub GlobalReservations)
+			foreach (var res in GlobalReservations)
+			{
+                var userName = res.User?.FirstName + " " + res.User?.LastName ?? "Brak";
+				var roomName = res.Room?.RoomName ?? "Brak";
+                var Data = res.DateReservation.ToString("yyyy-MM-dd") ?? "";
+				var start = res.Time_Reservation?.StartTime.ToString("hh\\:mm") ?? "";
+				var end = res.Time_Reservation?.EndTime.ToString("hh\\:mm") ?? "";
+
+				// Obsługa przecinków w danych (podstawowe escapowanie)
+				sb.AppendLine($"{res.Id};{userName};{roomName};{Data};{start};{end}");
+			}
+
+			var csvContent = sb.ToString();
+			var fileName = $"raport_rezerwacji_{DateTime.Now:yyyyMMdd}.csv";
+
+			// ZMIANA 3: Wywołanie JS z przekazaniem zawartości pliku
+			// Musisz mieć odpowiednią funkcję JS po stronie przeglądarki
+			await JS.InvokeVoidAsync("downloadFileFromBlob", fileName, "text/csv", csvContent);
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine($"Błąd eksportu: {ex.Message}");
+		}
+		finally
+		{
+			isLoading = false;
+			StateHasChanged();
+		}
 	}
 }
