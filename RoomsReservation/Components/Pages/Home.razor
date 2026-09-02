@@ -1,11 +1,13 @@
 ﻿@using Microsoft.AspNetCore.Identity;
 @using RoomsReservation.Data;
 @using RoomsReservation.Data.Tables;
+@using RoomsReservation.Services;
 
 @page "/"
 @rendermode InteractiveServer
 @inject AppDbContext Db
 @inject AppState AppState
+@inject IEmailService EmailService
 
 <PageTitle>Home</PageTitle>
 
@@ -133,6 +135,9 @@
     private string RegisterRole = "";
     private string RegisterMessage = "";
 
+    //send Email
+    private string? _status;
+
     protected override void OnInitialized()
     {
         Users = Db.Users.ToList();
@@ -142,7 +147,7 @@
     private void ShowRegister() => ActiveForm = "register";
     private void CloseModal() => ActiveForm = "";
 
-    private void Login()
+    private async Task Login()
     {
         var user = Db.Users.FirstOrDefault(u => u.Email == LoginEmail);
         if (user == null)

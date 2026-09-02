@@ -14,5 +14,8 @@
 
         public int Time_ReservationId { get; set; }
         public Time_Reservation Time_Reservation { get; set; } = null!;
+
+        // do wysyłania maila przypominającego o rezerwacji
+        public bool ReminderSent { get; set; }
     }
 }
