@@ -29,16 +29,6 @@
                     </div>
 
                     <div>
-                        <label>Od godziny</label>
-                        <input type="time" @bind="filterStartTime" @bind:format="HH:mm" />
-                    </div>
-
-                    <div>
-                        <label>Do godziny</label>
-                        <input type="time" @bind="filterEndTime" @bind:format="HH:mm" />
-                    </div>
-
-                    <div>
                         <label>Piętro</label>
                         <input type="number" @bind="filterFloor" />
                     </div>
@@ -50,7 +40,14 @@
 
                     <div>
                         <label>Wyposażenie</label>
-                        <input type="text" @bind="filterEquipment" placeholder="np. projektor" />
+                        <select @bind="filterEquipment" style="width: 200px">
+                            <-- trzeba zrobić to w css -- />
+                            <option value=""></option>
+                            @foreach (var eq in AvalaibleEquipment)
+                            {
+                                <option value="@eq.EquipmentName">@eq.EquipmentName</option>
+                            }
+                        </select>
                     </div>
                 </div>
 
@@ -76,32 +73,13 @@
                 @foreach (var cell in CalendarDays)
                 {
                     <button type="button"
-                            class="day-cell @(cell.IsCurrentMonth ? "" : "muted")  @(selectedDate == cell.Date ? "selected" : "")"
+                            class="day-cell @(cell.IsCurrentMonth ? "" : "muted")  @(SelectedDate == cell.Date ? "selected" : "")"
                             @onclick="() => SelectDate(cell.Date)">
                         <div class="day-top">
                             <span class="day-number">@cell.Date.Day</span>
                         </div>
 
-                        <div class="day-body">
-                            @if (rooms.Any())
-                            {
-                                @foreach (var room in filteredRooms)
-                                {
-                                    if (BusyDateRooms.Contains(room.Id))
-                                    {
-
-                                    }
-                                    else
-                                    {
-                                        <div class="mini-event">
-                                            <strong>@room.RoomName</strong>
-                                            <span>Piętro @room.Floor · @room.Capacity miejsc</span>
-                                        </div>
-                                    }
-
-                                }
-                            }
-                        </div>
+                        <div class="day-body"></div>
                     </button>
                 }
             </div>
@@ -110,7 +88,7 @@
         <aside class="details-card">
 
             <div class="details-header">
-                <h2>@selectedDate.ToString("dd.MM.yyyy")</h2>
+                <h2>@SelectedDate.ToString("dd.MM.yyyy")</h2>
             </div>
 
             @if (rooms.Count == 0)
@@ -122,7 +100,7 @@
             else
             {
                 <div class="event-list">
-                    @foreach (var room in rooms)
+                    @foreach (var room in FilteredRooms)
                     {
                         <div type="button" class="event-card @(SelectedRoom == room ? "selected" : "")"
                              @onclick="() => SelectRoom(room)">
@@ -136,22 +114,12 @@
                                 </div>
                             </div>
                             <div class="event-content">
-                                <h3>
-                                    @if (BusyDateRooms.Contains(room.Id))
-                                    {
-                                        <span class="badge bg-danger">Zajęta</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="badge bg-success">Dostępna</span>
-                                    }
-                                </h3>
                                 <p>Pojemność: @room.Capacity</p>
-                                <small>@(string.IsNullOrWhiteSpace(room.Professor) ? "Brak przypisanego prowadzącego" : room.Professor)</small>
                                 @if (!string.IsNullOrWhiteSpace(room.Description))
                                 {
                                     <div class="room-description">@room.Description</div>
                                 }
+                                <p>Wyposażenie: @string.Join(", ", room.RoomEquipments.Select(re => re.Equipment.EquipmentName))</p>
                             </div>
                         </div>
                     }
@@ -167,24 +135,21 @@
 
     private Room? SelectedRoom;
     private List<Room> rooms = new();
-    private List<Room> filteredRooms = new();
+    private List<Room> FilteredRooms = new();
     private List<Reservation> reservations = new();
     private List<CalendarDayCell> CalendarDays = new();
-    private List<Equipments> EquipmentList = new();
-    private List<RoomEquipment> RoomEquipments = new();
-
-    public HashSet<int> BusyDateRooms = new();
+    private List<Equipments> AvalaibleEquipment = new();
 
     private DateTime currentMonth = new(DateTime.Today.Year, DateTime.Today.Month, 1);
-    private DateTime selectedDate = DateTime.Today;
+    private DateTime SelectedDate = DateTime.Today;
 
-    private DateTime filterDate = DateTime.Today;
-    private DateTime filterStartTime = DateTime.Today.Date.AddHours(8);
-    private DateTime filterEndTime = DateTime.Today.Date.AddHours(10);
+    DateTime filterDate { get; set; } = DateTime.Today;
+    TimeOnly filterStartTime { get; set; }
+    TimeOnly filterEndTime { get; set; }
     private int? filterFloor;
     private int? filterCapacity;
-
     private string? filterEquipment;
+
     private static readonly string[] DayNames = ["Pon", "Wt", "Śr", "Czw", "Pt", "Sob", "Nd"];
     private string MonthTitle => currentMonth.ToString("MMMM yyyy", new System.Globalization.CultureInfo("pl-PL"));
 
@@ -201,8 +166,8 @@
 
         BuildCalendar();
 
-        if (selectedDate.Month != currentMonth.Month || selectedDate.Year != currentMonth.Year)
-            selectedDate = currentMonth;
+        if (SelectedDate.Month != currentMonth.Month || SelectedDate.Year != currentMonth.Year)
+            SelectedDate = currentMonth;
     }
 
 
@@ -210,86 +175,54 @@
     {
 
         rooms = await Db.Rooms
+            .Include(r => r.RoomEquipments)
+                .ThenInclude(re => re.Equipment)
             .AsNoTracking()
             .OrderBy(r => r.RoomName)
             .ToListAsync();
 
+        AvalaibleEquipment = await Db.Equipments.ToListAsync();
 
-
-        EquipmentList = await Db.Equipments.OrderBy(r => r.EquipmentName).ToListAsync();
-        RoomEquipments = await Db.RoomEquipments.ToListAsync();
-
-    }
-
-    private static bool HasTimeOverlap(DateTime start1, DateTime end1, DateTime start2, DateTime end2)
-    {
-        return start1 < end2 && start2 < end1;
+        FilteredRooms = rooms;
     }
 
     private async Task ApplyFilters()
     {
+        await SelectDate(filterDate);
 
+        var query = rooms.AsEnumerable();
 
-        var query = Db.Rooms
-            .Include(r => r.RoomEquipments)
-                .ThenInclude(re => re.Equipment)
-            .AsQueryable();
-
-
-        if (filterFloor.HasValue)
-            query = query.Where(r => r.Floor == filterFloor.Value);
-
-
-        if (filterCapacity.HasValue)
-            query = query.Where(r => r.Capacity >= filterCapacity.Value);
-
-
-        if (!string.IsNullOrWhiteSpace(filterEquipment))
+        if (filterFloor != null)
         {
-            string eq = filterEquipment.Trim().ToLower();
-            query = query.Where(r =>
-                r.RoomEquipments.Any(re =>
-                    re.Equipment.EquipmentName.ToLower().Contains(eq)
-                )
-            );
+            query = query.Where(r => r.Floor == filterFloor);
         }
 
+        if (filterCapacity != null)
+        {
+            query = query.Where(r => r.Capacity >= filterCapacity.Value);
+        }
 
-        var roomsAfterBasicFilters = await query.ToListAsync();
+        if (filterEquipment != null)
+        {
+            query = query.Where(r => r.RoomEquipments.Any(re => re.Equipment.EquipmentName == filterEquipment));
+        }
 
-
-        DateOnly selectedDateOnly = DateOnly.FromDateTime(filterDate);
-
-        var reservationsForDay = await Db.Reservations
-            .Include(r => r.Time_Reservation)
-            .Where(r => r.DateReservation == selectedDateOnly)
-            .ToListAsync();
-
-
-        var filterStart = filterStartTime.TimeOfDay;
-        var filterEnd = filterEndTime.TimeOfDay;
-
-        if (filterEnd <= filterStart)
-            filterEnd = filterStart.Add(TimeSpan.FromHours(1));
-
-
-        BusyDateRooms = reservationsForDay
-            .Where(r =>
-                r.Time_Reservation.StartTime < filterEnd &&
-                filterStart < r.Time_Reservation.EndTime
-            )
-            .Select(r => r.RoomId)
-            .ToHashSet();
-
-
-        filteredRooms = roomsAfterBasicFilters
-            .Where(r => !BusyDateRooms.Contains(r.Id))
-            .OrderBy(r => r.RoomName)
-            .ToList();
+        FilteredRooms = query.ToList();
 
         StateHasChanged();
     }
 
+    private void ResetFilters()
+    {
+        SelectedDate = DateTime.Today;
+        FilteredRooms = rooms;
+        
+        filterFloor = null;
+        filterCapacity = null;
+        filterEquipment = null;
+
+        StateHasChanged();
+    }
 
     private void BuildCalendar()
     {
@@ -310,20 +243,6 @@
         }
     }
 
-    private void ResetFilters()
-    {
-        filterDate = DateTime.Today;
-        selectedDate = DateTime.Today;
-        filterStartTime = DateTime.Today.Date.AddHours(8);
-        filterEndTime = DateTime.Today.Date.AddHours(10);
-        filterFloor = null;
-        filterCapacity = null;
-        filterEquipment = null;
-
-        ApplyFilters();
-    }
-
-
     private async Task PreviousMonth()
     {
         currentMonth = currentMonth.AddMonths(-1);
@@ -338,13 +257,9 @@
 
     private async Task SelectDate(DateTime date)
     {
-        selectedDate = date;
+        SelectedDate = date;
 
         DateOnly SelectedDateOnly = DateOnly.FromDateTime(date);
-
-        BusyDateRooms = await Db.Reservations.Where(r =>
-        r.DateReservation == (SelectedDateOnly)
-        ).Select(r => r.RoomId).ToHashSetAsync();
 
         SelectedRoom = null;
     }
@@ -368,7 +283,7 @@
             return;
 
         AppState.SelectedRoom = SelectedRoom;
-        AppState.SelectedDate = DateOnly.FromDateTime(selectedDate);
+        AppState.SelectedDate = DateOnly.FromDateTime(SelectedDate);
 
         Nav.NavigateTo("/reservation");
     }
