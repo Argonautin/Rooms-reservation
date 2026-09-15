@@ -117,7 +117,7 @@
                                 <p>Pojemność: @room.Capacity</p>
                                 @if (!string.IsNullOrWhiteSpace(room.Description))
                                 {
-                                    <div class="room-description">@room.Description</div>
+                                    <div class="room-description">Opis: @room.Description</div>
                                 }
                                 <p>Wyposażenie: @string.Join(", ", room.RoomEquipments.Select(re => re.Equipment.EquipmentName))</p>
                             </div>

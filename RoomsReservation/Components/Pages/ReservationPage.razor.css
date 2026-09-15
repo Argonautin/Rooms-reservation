@@ -1,26 +1,25 @@
-﻿.remove-btn {
-    margin-left: 10px;
-    background: none;
-    color: red;
-    border: none;
-    padding: 0;
-    font: inherit;
-    cursor: pointer;
-    outline: inherit;
-}
-
+﻿
 .layout {
     display: flex;
     width: 100%;
-    height: calc(100vh - 20px);
-    gap: 20px;
-    padding: 10px;
-    box-sizing: border-box;
+    min-height: calc(100vh - 6rem);
+    gap: 1.25rem;
+    align-items: flex-start;
+}
+
+.left-panel,
+.right-panel {
+    border: 1px solid #e4e4e7;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 2px 6px rgba(24, 24, 27, 0.04);
 }
 
 .left-panel {
     flex: 1;
     max-width: 1000px;
+    padding: 1rem;
+    overflow: hidden;
 }
 
 .right-panel {
@@ -33,54 +32,82 @@
 .floor-selector {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    margin-bottom: 1rem;
+}
+
+.floor-btn {
+    min-height: 2.55rem;
+    padding: 0.55rem 0.85rem;
+    border: 1px solid #d4d4d8;
+    border-radius: 9px;
+    background: #ffffff;
+    color: #3f3f46;
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.88rem;
+    font-weight: 650;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+    .floor-btn:hover {
+        border-color: #bfdbfe;
+        background: #eff6ff;
+        color: #1e40af;
+    }
+
+.your-Reservation-btn,
+.save-btn {
+    min-height: 2.65rem;
+    padding: 0.6rem 0.95rem;
+    border: 1px solid #2563eb;
+    border-radius: 9px;
+    background: #2563eb;
+    color: #ffffff;
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.88rem;
+    font-weight: 700;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
 .your-Reservation-btn {
     margin-left: auto;
-    padding: 8px 14px;
-    background: #4caf50;
-    color: white;
-    border: none;
-    cursor: pointer;
-    transition: background 0.15s, transform 1s;
 }
 
-.your-Reservation-btn:active {
-    background: #3e8e41;
-}
+    .your-Reservation-btn:hover,
+    .save-btn:hover {
+        border-color: #1d4ed8;
+        background: #1d4ed8;
+    }
 
+    .your-Reservation-btn:active,
+    .save-btn:active {
+        background: #1e40af;
+    }
 
-.floor-btn {
-    margin-right: 10px;
-    padding: 8px 14px;
-    border: none;
-    background: #eee;
-    cursor: pointer;
-}
-
-.floor-btn:hover {
-    background: #d0e2ff;
-}
-
-textarea, input {
+textarea,
+input {
     width: 100%;
-    margin-bottom: 10px;
+    box-sizing: border-box;
+    margin-bottom: 0.8rem;
+    padding: 0.7rem 0.8rem;
+    border: 1px solid #d4d4d8;
+    border-radius: 9px;
+    outline: none;
+    background: #ffffff;
+    color: #1f1f24;
+    font: inherit;
+    font-size: 0.9rem;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-.save-btn {
-    padding: 8px 14px;
-    background: #4caf50;
-    color: white;
-    border: none;
-    cursor: pointer;
-    transition: background 0.15s, transform 1s;
-}
-
-.save-btn:active {
-    background: #3e8e41;
-}
+    textarea:focus,
+    input:focus {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
 
 
 .slot-buttons {
@@ -131,3 +158,19 @@ textarea, input {
     font-size: 16px;
     transition: 0.2s;
 }
+
+.remove-btn {
+    margin-left: 0.5rem;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #be123c;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 700;
+}
+
+    .remove-btn:hover {
+        color: #9f1239;
+        text-decoration: underline;
+    }

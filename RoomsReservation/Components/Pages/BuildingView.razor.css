@@ -1,54 +1,110 @@
-﻿.remove-btn {
-    margin-left: 10px;
-    background: none;
-    color: red;
-    border: none;
-    padding: 0;
-    font: inherit;
-    cursor: pointer;
-    outline: inherit;
-}
-
-.layout {
+﻿.layout {
     display: flex;
     width: 100%;
-    height: calc(100vh - 20px);
-    gap: 20px;
-    padding: 10px;
-    box-sizing: border-box;
+    min-height: calc(100vh - 7.5rem);
+    gap: 1.5rem;
+    align-items: flex-start;
+}
+
+.left-panel,
+.right-panel {
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid #e2e8f0;
+    border-radius: 24px;
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.06);
+    backdrop-filter: blur(8px);
 }
 
 .left-panel {
     flex: 1;
-    max-width: 1000px; 
+    max-width: 1000px;
+    padding: 1.1rem;
+    overflow: hidden;
 }
 
 .right-panel {
-    width: 350px;
-    border-left: 2px solid #ddd;
-    padding-left: 20px;
+    width: 360px;
+    padding: 1.35rem;
     overflow-y: auto;
+    position: sticky;
+    top: 5.5rem;
 }
 
 .floor-selector {
-    margin-bottom: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    margin-bottom: 1rem;
 }
 
 .floor-btn {
-    margin-right: 10px;
-    padding: 8px 14px;
+    padding: 0.72rem 1rem;
+    border: 1px solid #dbe7f0;
+    background: #f8fafc;
+    color: #1e293b;
+    border-radius: 999px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+    .floor-btn:hover {
+        background: #eef6ff;
+        border-color: #93c5fd;
+        color: #0f172a;
+    }
+
+textarea,
+input {
+    width: 100%;
+    margin-bottom: 0.95rem;
+    border: 1px solid #dbe3ec;
+    border-radius: 16px;
+    padding: 0.85rem 0.95rem;
+    background: #f8fafc;
+    color: #0f172a;
+    font: inherit;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+}
+
+    textarea:focus,
+    input:focus {
+        outline: none;
+        border-color: #14b8a6;
+        background: #ffffff;
+        box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.12);
+    }
+
+.remove-btn {
+    margin-left: 0.5rem;
+    background: none;
+    color: #dc2626;
     border: none;
-    background: #eee;
+    padding: 0;
+    font: inherit;
+    font-weight: 700;
     cursor: pointer;
 }
 
-.floor-btn:hover {
-    background: #d0e2ff;
+    .remove-btn:hover {
+        color: #991b1b;
+    }
+
+button,
+input + button,
+.save-btn {
+    border-radius: 10px !important;
+    border-color: #1d4ed8;
+    background: #1d4ed8;
 }
 
-textarea, input {
-    width: 100%;
-    margin-bottom: 10px;
-}
-
-
+    button,
+    input + button,
+    .save-btn ~ p {
+        margin: 0.25rem 0 0;
+        color: #ffffff;
+        font: inherit;
+        font-size: 0.88rem;
+        font-weight: 700;
+    }

@@ -11,14 +11,14 @@
 @inject IEmailService EmailService
 @inject RoleClassifierClient RoleClassifier
 
-<PageTitle>Home</PageTitle>
+<PageTitle>Strona główna</PageTitle>
 
-<h1>Login or register</h1>
+<h1>Zaloguj się lub zarejestruj</h1>
 
 <ul>
     @foreach (var s in Users)
     {
-        <li>
+        <li class="uzytkownicy">
             @s.FirstName @s.LastName
             @(s.IsProfessor ? "Professor" : "Student")
             @s.Email
@@ -36,7 +36,7 @@
 }
 
 <!-- Otwieranie okna z logowaniem -->
-<button class="login-btn" @onclick="ShowLogin">Login</button>
+<button class="login-btn" @onclick="ShowLogin">Zaloguj się</button>
 
 <div class="auth-modal @(ActiveForm == "register" ? "show slide" : (ActiveForm == "login" ? "show" : ""))">
     <button class="close-btn-modal" @onclick="CloseModal">
@@ -45,7 +45,7 @@
 
     <!-- LOGIN hasło dla przykładowych kont: haslo a dla admina Admin-->
     <div class="form-box login">
-        <h2>Login</h2>
+        <h2>Logowanie</h2>
 
         <div class="input-box">
             <input @bind="LoginEmail" placeholder="Email">
@@ -53,15 +53,15 @@
         </div>
 
         <div class="input-box">
-            <input type="password" @bind="LoginPassword" placeholder="Password">
+            <input type="password" @bind="LoginPassword" placeholder="Hasło">
             <i class='bx bxs-lock'></i>
         </div>
 
-        <button class="btn" @onclick="Login">Login</button>
+        <button class="btn" @onclick="Login">Zaloguj się</button>
 
         <p>
-            Don't have an account?
-            <a href="#" @onclick="ShowRegister">Register</a>
+            Nie masz konta?
+            <a href="#" @onclick="ShowRegister">Zarejestruj się</a>
         </p>
 
         @if (!string.IsNullOrEmpty(LoginMessage))
@@ -72,15 +72,15 @@
 
     <!-- REGISTER -->
     <div class="form-box register">
-        <h2>Register</h2>
+        <h2>Rejestracja</h2>
 
         <div class="input-box">
-            <input @bind="RegisterFirstName" placeholder="First name">
+            <input @bind="RegisterFirstName" placeholder="Imię">
             <i class='bx bxs-user'></i>
         </div>
 
         <div class="input-box">
-            <input @bind="RegisterLastName" placeholder="Last name">
+            <input @bind="RegisterLastName" placeholder="Nazwisko">
             <i class='bx bxs-user'></i>
         </div>
 
@@ -90,7 +90,7 @@
         </div>
 
         <div class="input-box">
-            <input type="password" @bind="RegisterPassword" placeholder="Password">
+            <input type="password" @bind="RegisterPassword" placeholder="Hasło">
             <i class='bx bxs-lock'></i>
         </div>
 
@@ -98,11 +98,11 @@
             Rola konta zostanie automatycznie określona na podstawie adresu e-mail.
         </p>
 
-        <button class="btn" @onclick="Register">Register</button>
+        <button class="btn" @onclick="Register">Zarejestruj się</button>
 
         <p>
-            Already have an account?
-            <a href="#" @onclick="ShowLogin">Login</a>
+            Masz już konto?
+            <a href="#" @onclick="ShowLogin">Zaloguj się</a>
         </p>
 
         @if (!string.IsNullOrEmpty(RegisterMessage))
