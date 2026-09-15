@@ -2,12 +2,14 @@
 @using RoomsReservation.Data;
 @using RoomsReservation.Data.Tables;
 @using RoomsReservation.Services;
+@using RoomsReservation.Services.RoleClassifier
 
 @page "/"
 @rendermode InteractiveServer
 @inject AppDbContext Db
 @inject AppState AppState
 @inject IEmailService EmailService
+@inject RoleClassifierClient RoleClassifier
 
 <PageTitle>Home</PageTitle>
 
@@ -92,13 +94,9 @@
             <i class='bx bxs-lock'></i>
         </div>
 
-        <div class="input-box">
-            <select @bind="RegisterRole">
-                <option value="">Select role</option>
-                <option value="student">Student</option>
-                <option value="professor">Professor</option>
-            </select>
-        </div>
+        <p class="role-info">
+            Rola konta zostanie automatycznie określona na podstawie adresu e-mail.
+        </p>
 
         <button class="btn" @onclick="Register">Register</button>
 
@@ -132,7 +130,6 @@
     private string RegisterEmail = "";
     private string RegisterPassword = "";
     private PasswordHasher<User> hasher = new();
-    private string RegisterRole = "";
     private string RegisterMessage = "";
 
     //send Email
@@ -169,44 +166,106 @@
         LoginMessage = $"Welcome {user.FirstName}!";
         CloseModal();
     }
-
-    private void Register()
+    private async Task Register()
     {
         RegisterMessage = "";
 
         if (string.IsNullOrWhiteSpace(RegisterFirstName) ||
             string.IsNullOrWhiteSpace(RegisterLastName) ||
             string.IsNullOrWhiteSpace(RegisterEmail) ||
-            string.IsNullOrWhiteSpace(RegisterPassword) ||
-            string.IsNullOrWhiteSpace(RegisterRole))
+            string.IsNullOrWhiteSpace(RegisterPassword))
         {
-            RegisterMessage = "All fields are required.";
+            RegisterMessage = "Wszystkie pola są wymagane.";
             return;
         }
 
-        if (Db.Users.Any(u => u.Email == RegisterEmail))
+        var normalizedEmail = RegisterEmail.Trim().ToLowerInvariant();
+
+        if (Db.Users.Any(u => u.Email.ToLower() == normalizedEmail))
         {
-            RegisterMessage = "Email already exists.";
+            RegisterMessage = "Konto z takim adresem e-mail już istnieje.";
             return;
         }
 
-        var newUser = new User
+        try
         {
-            FirstName = RegisterFirstName,
-            LastName = RegisterLastName,
-            Email = RegisterEmail,
-            IsStudent = RegisterRole == "student",
-            IsProfessor = RegisterRole == "professor"
-        };
+            var classification = await RoleClassifier.ClassifyAsync(
+                new RoleClassificationRequest
+                {
+                    FirstName = RegisterFirstName.Trim(),
+                    LastName = RegisterLastName.Trim(),
+                    Email = normalizedEmail
+                });
 
-        newUser.Password = hasher.HashPassword(newUser, RegisterPassword);
+            if (classification is null)
+            {
+                RegisterMessage =
+                    "Usługa klasyfikacji nie zwróciła odpowiedzi. Spróbuj ponownie.";
+                return;
+            }
 
-        Db.Users.Add(newUser);
-        Db.SaveChanges();
+            // Najważniejszy warunek:
+            // adres spoza SAN nie może zostać zapisany do bazy.
+            if (!classification.Allowed)
+            {
+                RegisterMessage = string.IsNullOrWhiteSpace(classification.Reason)
+                    ? "Rejestracja jest dostępna wyłącznie dla adresów e-mail SAN."
+                    : classification.Reason;
 
-        Users = Db.Users.ToList();
+                return;
+            }
 
-        RegisterMessage = "Account created successfully!";
-        ShowLogin();
+            var isProfessor = string.Equals(
+                classification.Role,
+                "professor",
+                StringComparison.OrdinalIgnoreCase);
+
+            var isStudent = string.Equals(
+                classification.Role,
+                "student",
+                StringComparison.OrdinalIgnoreCase);
+
+            // Dodatkowa walidacja: odrzuca niespodziewaną rolę z mikroserwisu.
+            if (!isProfessor && !isStudent)
+            {
+                RegisterMessage =
+                    "Usługa klasyfikacji zwróciła nieprawidłową rolę użytkownika.";
+                return;
+            }
+
+            var newUser = new User
+            {
+                FirstName = RegisterFirstName.Trim(),
+                LastName = RegisterLastName.Trim(),
+                Email = normalizedEmail,
+                IsStudent = isStudent,
+                IsProfessor = isProfessor
+            };
+
+            newUser.Password = hasher.HashPassword(newUser, RegisterPassword);
+
+            Db.Users.Add(newUser);
+            await Db.SaveChangesAsync();
+
+            Users = Db.Users.ToList();
+
+            RegisterMessage = isProfessor
+                ? "Konto utworzone. Mikroserwis przypisał rolę: Wykładowca."
+                : "Konto utworzone. Mikroserwis przypisał rolę: Student.";
+
+            ShowLogin();
+        }
+        catch (HttpRequestException)
+        {
+            RegisterMessage =
+                "Nie można połączyć się z mikroserwisem klasyfikacji. " +
+                "Uruchom mikroserwis Clojure na porcie 8081.";
+        }
+        catch (Exception)
+        {
+            RegisterMessage =
+                "Podczas tworzenia konta wystąpił nieoczekiwany błąd.";
+        }
     }
+   
 }

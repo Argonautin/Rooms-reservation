@@ -4,6 +4,7 @@ using RoomsReservation.Components;
 using RoomsReservation.Data;
 using RoomsReservation.Data.Models;
 using RoomsReservation.Services;
+using RoomsReservation.Services.RoleClassifier;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,11 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 
 builder.Services.AddSingleton<AppState>();
+// Cloujure gówno
+builder.Services.AddHttpClient<RoleClassifierClient>(client =>
+{
+    client.BaseAddress = new Uri("http://localhost:8081");
+});
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
