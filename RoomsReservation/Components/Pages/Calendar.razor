@@ -133,7 +133,6 @@
 @code {
     [Parameter][SupplyParameterFromQuery] public int? roomId { get; set; }
 
-    private Room? SelectedRoom;
     private List<Room> rooms = new();
     private List<Room> FilteredRooms = new();
     private List<Reservation> reservations = new();
@@ -146,6 +145,8 @@
     DateTime filterDate { get; set; } = DateTime.Today;
     TimeOnly filterStartTime { get; set; }
     TimeOnly filterEndTime { get; set; }
+
+    private Room? SelectedRoom;
     private int? filterFloor;
     private int? filterCapacity;
     private string? filterEquipment;

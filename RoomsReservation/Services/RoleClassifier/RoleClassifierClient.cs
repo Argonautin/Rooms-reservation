@@ -29,7 +29,6 @@ public class RoleClassifierClient
             var result = await response.Content
                 .ReadFromJsonAsync<RoleClassificationResponse>();
 
-            // Brak odpowiedzi nie może dopuścić użytkownika do rejestracji.
             return result ?? new RoleClassificationResponse
             {
                 Allowed = false,
@@ -44,7 +43,6 @@ public class RoleClassifierClient
                 ex,
                 "Nie udało się połączyć z mikroserwisem klasyfikacji ról.");
 
-            // Fail closed: jeśli Clojure nie działa, konta nie tworzymy.
             return new RoleClassificationResponse
             {
                 Allowed = false,

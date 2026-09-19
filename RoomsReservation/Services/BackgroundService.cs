@@ -27,7 +27,6 @@ namespace RoomsReservation.Services
                     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
                     var emailService = scope.ServiceProvider.GetRequiredService<IEmailService>();
 
-                    // Rezerwacje, które zaczynają się za 24h i jeszcze nie wysłaliśmy maila
                     var dueReservations = db.Reservations
                         .Include(r => r.User)
                         .Where(r => !r.ReminderSent

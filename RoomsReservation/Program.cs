@@ -19,11 +19,9 @@ builder.Services.AddHttpClient<RoleClassifierClient>(client =>
     client.BaseAddress = new Uri("http://localhost:8081");
 });
 
-// Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-//configure SMTP sender
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 builder.Services.AddScoped<IEmailService, EmailService>();
 
@@ -31,7 +29,6 @@ builder.Services.AddHostedService<ReservationReminderService>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);

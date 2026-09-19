@@ -88,10 +88,8 @@
 		{
 			var sb = new System.Text.StringBuilder();
 
-			// Nagłówek CSV
 			sb.AppendLine("ID;Użytkownik;Sala;Data;Rozpoczęcie;Zakończenie");
 
-			// Dane (możesz wybrać UserReservations lub GlobalReservations)
 			foreach (var res in GlobalReservations)
 			{
                 var userName = res.User?.FirstName + " " + res.User?.LastName ?? "Brak";
@@ -100,15 +98,12 @@
 				var start = res.Time_Reservation?.StartTime.ToString("hh\\:mm") ?? "";
 				var end = res.Time_Reservation?.EndTime.ToString("hh\\:mm") ?? "";
 
-				// Obsługa przecinków w danych (podstawowe escapowanie)
 				sb.AppendLine($"{res.Id};{userName};{roomName};{Data};{start};{end}");
 			}
 
 			var csvContent = sb.ToString();
 			var fileName = $"raport_rezerwacji_{DateTime.Now:yyyyMMdd}.csv";
 
-			// ZMIANA 3: Wywołanie JS z przekazaniem zawartości pliku
-			// Musisz mieć odpowiednią funkcję JS po stronie przeglądarki
 			await JS.InvokeVoidAsync("downloadFileFromBlob", fileName, "text/csv", csvContent);
 		}
 		catch (Exception ex)

@@ -35,7 +35,6 @@ namespace RoomsReservation.Services
             }
             catch (Exception ex)
             {
-                // Tu możesz zalogować błąd (ILogger, Serilog itp.)
                 Console.WriteLine($"Błąd wysyłki maila: {ex.Message}");
                 return false;
             }

@@ -35,7 +35,6 @@
     </h1>
 }
 
-<!-- Otwieranie okna z logowaniem -->
 <button class="login-btn" @onclick="ShowLogin">Zaloguj się</button>
 
 <div class="auth-modal @(ActiveForm == "register" ? "show slide" : (ActiveForm == "login" ? "show" : ""))">
@@ -43,7 +42,6 @@
         <i class='bx bxs-x'></i>
     </button>
 
-    <!-- LOGIN hasło dla przykładowych kont: haslo a dla admina Admin-->
     <div class="form-box login">
         <h2>Logowanie</h2>
 
@@ -70,7 +68,6 @@
         }
     </div>
 
-    <!-- REGISTER -->
     <div class="form-box register">
         <h2>Rejestracja</h2>
 
@@ -116,15 +113,12 @@
 {
     private List<User> Users = new();
 
-    // Modal state
     private string ActiveForm = "";
 
-    // Login model
     private string LoginEmail = "";
     private string LoginPassword = "";
     private string LoginMessage = "";
 
-    // Register model
     private string RegisterFirstName = "";
     private string RegisterLastName = "";
     private string RegisterEmail = "";
@@ -132,7 +126,6 @@
     private PasswordHasher<User> hasher = new();
     private string RegisterMessage = "";
 
-    //send Email
     private string? _status;
 
     protected override void OnInitialized()
@@ -204,8 +197,7 @@
                 return;
             }
 
-            // Najważniejszy warunek:
-            // adres spoza SAN nie może zostać zapisany do bazy.
+
             if (!classification.Allowed)
             {
                 RegisterMessage = string.IsNullOrWhiteSpace(classification.Reason)
@@ -225,7 +217,6 @@
                 "student",
                 StringComparison.OrdinalIgnoreCase);
 
-            // Dodatkowa walidacja: odrzuca niespodziewaną rolę z mikroserwisu.
             if (!isProfessor && !isStudent)
             {
                 RegisterMessage =

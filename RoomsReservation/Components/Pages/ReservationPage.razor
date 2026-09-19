@@ -86,7 +86,6 @@
 
 	int SelectedTimeId;
 
-	//Inicjalizacja danych
 	protected override async Task OnInitializedAsync()
 	{
 		SelectedDate = AppState.SelectedDate ?? DateOnly.FromDateTime(DateTime.Today);
@@ -107,7 +106,6 @@
 
 	}
 
-	//Pozyskanie danych z Bazy danych o pokoju, który został kliknięty
 	async Task RoomClicked(Room room)
 	{
 		if (room.RoomName is "WC1" or "WC2" or "Winda" or "Schody" or "Korytarz")
@@ -115,7 +113,6 @@
 
 		SelectedRoom = await Db.Rooms.FirstAsync(r => r.Id == room.Id);
 
-		// pobieranie z bazy danych zajętych terminów dla wybranego pokoju i daty
 
 		var reservations = await Db.Reservations
 			.Where(r =>
@@ -133,7 +130,6 @@
 
 	}
 
-	//grupowanie pokoi względem pięter
 	private Dictionary<string, List<Room>> GroupRoomsByFloor(List<Room> rooms)
 	{
 		return rooms.GroupBy(r => r.Floor).ToDictionary
