@@ -36,10 +36,52 @@
     [Parameter] public List<Room> Rooms { get; set; } = new();
     [Parameter] public EventCallback<Room> OnRoomSelected { get; set; }
 
+    private class RoomConfig
+    {
+        public string Polygon { get; init; } = "";
+        public int LabelX { get; init; }
+        public int LabelY { get; init; }
+    }
+
+    private readonly Dictionary<string, RoomConfig> RoomTypeConfigs = new()
+    {
+        ["X1"] = new()
+        {
+            Polygon = "20,20 190,20 190,140 40,140 20,120",
+            LabelX = 85,
+            LabelY = 80
+        },
+        ["X2"] = new()
+        {
+            Polygon = "240,70 460,70 460,175 250,175 240,165 240,160",
+            LabelX = 325,
+            LabelY = 122
+        },
+        ["X3"] = new()
+        {
+            Polygon = "460,100 560,100 560,130 590,130 590,175 460,175",
+            LabelX = 500,
+            LabelY = 137
+        }
+    };
+
     readonly List<string> TechnicalRooms = new()
     {
         "WC1", "WC2", "Winda", "Schody", "Korytarz"
     };
+
+    private string GetRoomType(string roomName)
+    {
+        if (string.IsNullOrWhiteSpace(roomName) || roomName.Length < 4)
+            return "";
+
+        var lastChar = roomName[^1];
+
+        if (lastChar is '1' or '2' or '3')
+            return $"X{lastChar}";
+
+        return "";
+    }
 
     string GetPolygon(string name)
     {
@@ -54,28 +96,34 @@
                 _ => ""
             };
 
-        return name switch
-        {
-            "P-11" or "P-21" or "P-31" or "P-41" => "20,20 190,20 190,140 40,140 20,120",
-            "P-12" or "P-22" or "P-32" or "P-42" => "240,70 460,70 460,175 250,175 240,165 240,160",
-            "P-13" or "P-23" or "P-33" or "P-43" => "460,100 560,100 560,130 590,130 590,175 460,175",
-            _ => ""
-        };
+        var type = GetRoomType(name);
+        if (!string.IsNullOrEmpty(type) && RoomTypeConfigs.TryGetValue(type, out var cfg))
+            return cfg.Polygon;
+
+        return "";
     }
 
-    int GetLabelX(string name) => name switch
+    int GetLabelX(string name)
     {
-        "P-11" or "P-21" or "P-31" or "P-41" => 85,
-        "P-12" or "P-22" or "P-32" or "P-42" => 325,
-        "P-13" or "P-23" or "P-33" or "P-43" => 500,
-        _ => 0
-    };
+        if (TechnicalRooms.Contains(name))
+            return 0;
 
-    int GetLabelY(string name) => name switch
+        var type = GetRoomType(name);
+        if (!string.IsNullOrEmpty(type) && RoomTypeConfigs.TryGetValue(type, out var cfg))
+            return cfg.LabelX;
+
+        return 0;
+    }
+
+    int GetLabelY(string name)
     {
-        "P-11" or "P-21" or "P-31" or "P-41" => 80,
-        "P-12" or "P-22" or "P-32" or "P-42" => 122,
-        "P-13" or "P-23" or "P-33" or "P-43" => 137,
-        _ => 0
-    };
+        if (TechnicalRooms.Contains(name))
+            return 0;
+
+        var type = GetRoomType(name);
+        if (!string.IsNullOrEmpty(type) && RoomTypeConfigs.TryGetValue(type, out var cfg))
+            return cfg.LabelY;
+
+        return 0;
+    }
 }
