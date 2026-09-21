@@ -35,7 +35,14 @@
     </h1>
 }
 
-<button class="login-btn" @onclick="ShowLogin">Zaloguj się</button>
+@if(AppState.CurrentUser == null)
+{
+    <button class="login-btn" @onclick="ShowLogin">Zaloguj się</button>
+}
+else
+{
+    <button class="login-btn" @onclick="AppState.Logout">Wyloguj się</button>
+}
 
 <div class="auth-modal @(ActiveForm == "register" ? "show slide" : (ActiveForm == "login" ? "show" : ""))">
     <button class="close-btn-modal" @onclick="CloseModal">
@@ -126,8 +133,6 @@
     private PasswordHasher<User> hasher = new();
     private string RegisterMessage = "";
 
-    private string? _status;
-
     protected override void OnInitialized()
     {
         Users = Db.Users.ToList();
@@ -142,7 +147,7 @@
         var user = Db.Users.FirstOrDefault(u => u.Email == LoginEmail);
         if (user == null)
         {
-            LoginMessage = "User not found.";
+            LoginMessage = "Nie znaleziono użytkownika";
             return;
         }
 
@@ -150,13 +155,13 @@
 
         if (result != PasswordVerificationResult.Success)
         {
-            LoginMessage = "Incorrect password.";
+            LoginMessage = "Niepoprawne hasło.";
             return;
         }
 
         AppState.SetUser(user);
 
-        LoginMessage = $"Welcome {user.FirstName}!";
+        LoginMessage = $"Witaj {user.FirstName}!";
         CloseModal();
     }
     private async Task Register()

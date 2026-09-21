@@ -18,46 +18,54 @@
             </NavLink>
         </div>
 
-
-
             <div class="nav-item px-3">
                 <NavLink class="nav-link" href="Calendar">
                 <span class="bi" aria-hidden="true"></span> Kalendarz
                 </NavLink>
             </div>
 
+                
+
+                
+
+                @if (AppState.CurrentUser?.IsProfessor == true)
+                {
                 <div class="nav-item px-3">
-                <NavLink class="nav-link" href="reservation">
+                    <NavLink class="nav-link" href="reservation">
                         <span class="bi" aria-hidden="true"></span> Rezerwacja
                     </NavLink>
                 </div>
 
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="reports">
+                        <span class="bi" aria-hidden="true"></span> Eksport Raportu
+                    </NavLink>
+                </div>
+
+
+                }
+
+                @if(AppState.CurrentUser?.Email == "admin@san.edu.pl")
+                {
                 <div class="nav-item px-3">
                     <NavLink class="nav-link" href="/dodaj_sale">
                         <span class="bi" aria-hidden="true"></span> Dodaj sale
                     </NavLink>
                 </div>
 
-                @if (AppState.CurrentUser?.IsProfessor == true)
-                {
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="reports">
-                        <span class="bi" aria-hidden="true"></span> Eksport Raportu
-                    </NavLink>
-                </div>
-                }
-
                 <div class="nav-item px-3">
                     <NavLink class="nav-link" href="building">
                         <span class="bi" aria-hidden="true"></span> Plan budynku - edycja
                     </NavLink>
                 </div>
+                }
+        
     </nav>
 </div>
 
 @code {
 
-//@if(AppState.CurrentUser != null) @if(AppState.CurrentUser.isProfessor) 
+    //
 //to jest jak na koniec by Student widział tylko kalendarz a profesor reszte
 //i dodać to trzeba między divami
         
